@@ -8,6 +8,8 @@ import { IItemService, IServiceList } from './interfaces';
 import { SERVICES_COLLAPSED_HEIGHT, SERVICE_HEIGHT } from './styles';
 import ServicesSeparator from './ServicesSeparator';
 import Service from './Service';
+// Added for skipping service selection, if only one service exists
+import * as ServiceLogin from './serviceLogin';
 
 const ServiceList = ({ services, CAS_enabled, CAS_login_url, Gitlab_URL, server }: IServiceList) => (
 	<>
@@ -51,6 +53,10 @@ const LoginServices = ({ separator }: { separator: boolean }): React.ReactElemen
 		setCollapsed(prevState => !prevState);
 	};
 
+// Added for skipping service selection, if only one service exists
+   if (length == 1 ) {
+		ServiceLogin.onPressSaml({ loginService: Object.values(services)[0], server });
+	}
 	if (length > 3 && separator) {
 		return (
 			<>
