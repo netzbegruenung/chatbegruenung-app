@@ -42,12 +42,12 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface INewServerViewProps extends IBaseScreen<OutsideParamList, 'NewServerView'> {
+interface ICustomServerViewProps extends IBaseScreen<OutsideParamList, 'CustomServerView'> {
 	connecting: boolean;
 	previousServer: string | null;
 }
 
-interface INewServerViewState {
+interface ICustomServerViewState {
 	text: string;
 	certificate: string | null;
 	serversHistory: TServerHistoryModel[];
@@ -58,13 +58,14 @@ interface ISubmitParams {
 	username?: string;
 }
 
-class NewServerView extends React.Component<INewServerViewProps, INewServerViewState> {
-	constructor(props: INewServerViewProps) {
+class CustomServerView extends React.Component<ICustomServerViewProps, ICustomServerViewState> {
+	constructor(props: ICustomServerViewProps) {
 		super(props);
 		this.setHeader();
 
 		this.state = {
-			text: '',
+            //Add custom server url
+			text: '127.0.0.1',
 			certificate: null,
 			serversHistory: []
 		};
@@ -85,7 +86,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		}
 	}
 
-	componentDidUpdate(prevProps: Readonly<INewServerViewProps>) {
+	componentDidUpdate(prevProps: Readonly<ICustomServerViewProps>) {
 		if (prevProps.connecting !== this.props.connecting) {
 			this.setHeader();
 		}
@@ -115,11 +116,6 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 			return true;
 		}
 		return false;
-	};
-
-	onChangeText = (text: string) => {
-		this.setState({ text });
-		this.queryServerHistory(text);
 	};
 
 	queryServerHistory = async (text?: string) => {
@@ -167,25 +163,22 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		const { text, certificate } = this.state;
 		const { dispatch } = this.props;
 
-		if (text) {
-			Keyboard.dismiss();
-			//You can hardcode a server here by replacing text
-			const server = this.completeUrl(text);
+        Keyboard.dismiss();
+        const server = this.completeUrl(text);
 
-			// Save info - SSL Pinning
-			if (certificate) {
-				UserPreferences.setString(`${CERTIFICATE_KEY}-${server}`, certificate);
-			}
+        // Save info - SSL Pinning
+        if (certificate) {
+            UserPreferences.setString(`${CERTIFICATE_KEY}-${server}`, certificate);
+        }
 
-			// Save info - HTTP Basic Authentication
-			this.basicAuth(server, text);
+        // Save info - HTTP Basic Authentication
+        this.basicAuth(server, text);
 
-			if (fromServerHistory) {
-				dispatch(serverRequest(server, username, true));
-			} else {
-				dispatch(serverRequest(server));
-			}
-		}
+        if (fromServerHistory) {
+            dispatch(serverRequest(server, username, true));
+        } else {
+            dispatch(serverRequest(server));
+        }
 	};
 
 	basicAuth = (server: string, text: string) => {
@@ -248,7 +241,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 			await db.write(async () => {
 				await item.destroyPermanently();
 			});
-			this.setState((prevstate: INewServerViewState) => ({
+			this.setState((prevstate: ICustomServerViewState) => ({
 				serversHistory: prevstate.serversHistory.filter(server => server.id !== item.id)
 			}));
 		} catch {
@@ -297,24 +290,17 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 								height: 50
 							}
 						]}
-						source={require('../../static/images/logo_with_name.png')}
+						source={require('../../static/images/logo_custom.png')}
 						fadeDuration={0}
 					/>
-					<Text style={{ fontSize: 24, marginBottom: 24, color: themes[theme].fontTitlesLabels, ...sharedStyles.textBold }}>{I18n.t('Add_server')}</Text>
-					<ServerInput
-						text={text}
-						theme={theme}
-						serversHistory={serversHistory}
-						onChangeText={this.onChangeText}
-						onSubmit={this.submit}
-						onDelete={this.deleteServerHistory}
-						onPressServerHistory={this.onPressServerHistory}
-					/>
+					<Text style={{ fontSize: 24, marginBottom: 24, color: themes[theme].fontTitlesLabels, ...sharedStyles.textBold }}>{I18n.t('Welcome_headline')}</Text>
+					<Text style={{ fontSize: 12, marginBottom: 24, color: themes[theme].fontTitlesLabels }}>{I18n.t('Welcome_text')}</Text>
+
 					<Button
 						title={I18n.t('Connect')}
 						type='primary'
 						onPress={this.submit}
-						disabled={!text || connecting}
+						disabled={connecting}
 						loading={connecting}
 						style={styles.connectButton}
 						testID='new-server-view-button'
@@ -331,4 +317,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	previousServer: state.server.previousServer
 });
 
-export default connect(mapStateToProps)(withTheme(NewServerView));
+export default connect(mapStateToProps)(withTheme(CustomServerView));
