@@ -237,7 +237,10 @@ const handleServerRequest = function* handleServerRequest({ server, username, fr
 		if (serverInfo) {
 			yield Services.getLoginServices(server);
 			yield getLoginSettings({ server });
-			Navigation.navigate('WorkspaceView');
+			//Navigation.navigate('WorkspaceView');
+			// Replace WorkspaceView with LoginView to skip authentication selection for servers with one auth method
+			Navigation.navigate('LoginView', { url: server, authType: 'iframe' });
+
 
 			const Accounts_iframe_enabled = yield* appSelector(state => state.settings.Accounts_iframe_enabled);
 			if (fromServerHistory && !Accounts_iframe_enabled) {

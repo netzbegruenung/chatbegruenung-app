@@ -314,9 +314,14 @@ export type OutsideParamList = {
 
 export type OutsideModalParamList = {
 	OutsideStack: NavigatorScreenParams<OutsideParamList>;
-	AuthenticationWebView: {
-		authType: string;
-		url: string;
-		ssoToken?: string;
+//	AuthenticationWebView: {
+//		authType: string;
+//		url: string;
+//		ssoToken?: string;
+//	};
+// Added Parameter for skip authentication selection for servers with one auth method
+	LoginView: {
+		title: string;
+		username?: string;
 	};
 };
