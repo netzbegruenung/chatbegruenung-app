@@ -290,6 +290,8 @@ export type InsideStackParamList = {
 };
 
 export type OutsideParamList = {
+	//Add Param for a custom ServerView without URL TextField
+    //CustomServerView: undefined;
 	NewServerView: undefined;
 	WorkspaceView: undefined;
 	LoginView: {

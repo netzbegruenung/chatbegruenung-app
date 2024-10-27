@@ -1,10 +1,9 @@
 import { Q } from '@nozbe/watermelondb';
 import { Base64 } from 'js-base64';
 import React from 'react';
-import { BackHandler, Keyboard, StyleSheet, Text } from 'react-native';
+import { BackHandler, Image, Keyboard, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 import parse from 'url-parse';
-import { Image } from 'expo-image';
 
 import { inviteLinksClear } from '../../actions/inviteLinks';
 import { selectServerRequest, serverFinishAdd, serverRequest } from '../../actions/server';
@@ -19,7 +18,7 @@ import { sanitizeLikeString } from '../../lib/database/utils';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { OutsideParamList } from '../../stacks/types';
 import { withTheme } from '../../theme';
-import { isAndroid, isTablet } from '../../lib/methods/helpers';
+import { isTablet } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../../lib/methods/helpers/fetch';
 import { showConfirmationAlert } from '../../lib/methods/helpers/info';
@@ -28,32 +27,30 @@ import SSLPinning from '../../lib/methods/helpers/sslPinning';
 import sharedStyles from '../Styles';
 import ServerInput from './ServerInput';
 import { serializeAsciiUrl } from '../../lib/methods';
-import { getServerById } from '../../lib/database/services/Server';
 
 const styles = StyleSheet.create({
 	onboardingImage: {
-		alignSelf: 'center'
+		alignSelf: 'center',
+		resizeMode: 'contain'
 	},
 	buttonPrompt: {
 		...sharedStyles.textRegular,
-		textAlign: 'center',
-		lineHeight: 20
+		textAlign: 'center'
 	},
 	connectButton: {
-		marginTop: 36
+		marginTop: 20
 	}
 });
 
-interface INewServerViewProps extends IBaseScreen<OutsideParamList, 'NewServerView'> {
+interface ICustomServerViewProps extends IBaseScreen<OutsideParamList, 'CustomServerView'> {
 	connecting: boolean;
 	previousServer: string | null;
 }
 
-interface INewServerViewState {
+interface ICustomServerViewState {
 	text: string;
 	certificate: string | null;
 	serversHistory: TServerHistoryModel[];
-	showBottomInfo: boolean;
 }
 
 interface ISubmitParams {
@@ -61,23 +58,19 @@ interface ISubmitParams {
 	username?: string;
 }
 
-class NewServerView extends React.Component<INewServerViewProps, INewServerViewState> {
-	constructor(props: INewServerViewProps) {
+class CustomServerView extends React.Component<ICustomServerViewProps, ICustomServerViewState> {
+	constructor(props: ICustomServerViewProps) {
 		super(props);
 		this.setHeader();
 
 		this.state = {
-			text: '',
+            //Add custom server url
+			text: '127.0.0.1',
 			certificate: null,
-			serversHistory: [],
-			showBottomInfo: true
+			serversHistory: []
 		};
 		EventEmitter.addEventListener('NewServer', this.handleNewServerEvent);
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
-		if (isAndroid) {
-			Keyboard.addListener('keyboardDidShow', () => this.handleShowKeyboard());
-			Keyboard.addListener('keyboardDidHide', () => this.handleHideKeyboard());
-		}
 	}
 
 	componentDidMount() {
@@ -87,18 +80,13 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 	componentWillUnmount() {
 		EventEmitter.removeListener('NewServer', this.handleNewServerEvent);
 		BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
-		if (isAndroid) {
-			Keyboard.removeAllListeners('keyboardDidShow');
-			Keyboard.removeAllListeners('keyboardDidHide');
-		}
-
 		const { previousServer, dispatch } = this.props;
 		if (previousServer) {
 			dispatch(serverFinishAdd());
 		}
 	}
 
-	componentDidUpdate(prevProps: Readonly<INewServerViewProps>) {
+	componentDidUpdate(prevProps: Readonly<ICustomServerViewProps>) {
 		if (prevProps.connecting !== this.props.connecting) {
 			this.setHeader();
 		}
@@ -130,19 +118,6 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		return false;
 	};
 
-	handleShowKeyboard = () => {
-		this.setState({ ...this.state, showBottomInfo: false });
-	};
-
-	handleHideKeyboard = () => {
-		this.setState({ ...this.state, showBottomInfo: true });
-	};
-
-	onChangeText = (text: string) => {
-		this.setState({ text });
-		this.queryServerHistory(text);
-	};
-
 	queryServerHistory = async (text?: string) => {
 		const db = database.servers;
 		try {
@@ -159,15 +134,12 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		}
 	};
 
-	close = async () => {
+	close = () => {
 		const { dispatch, previousServer } = this.props;
 
 		dispatch(inviteLinksClear());
 		if (previousServer) {
-			const serverRecord = await getServerById(previousServer);
-			if (serverRecord) {
-				dispatch(selectServerRequest(previousServer, serverRecord.version));
-			}
+			dispatch(selectServerRequest(previousServer));
 		}
 	};
 
@@ -191,25 +163,22 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		const { text, certificate } = this.state;
 		const { dispatch } = this.props;
 
-		if (text) {
-			Keyboard.dismiss();
-			//You can hardcode a server here by replacing text
-			const server = this.completeUrl(text);
+        Keyboard.dismiss();
+        const server = this.completeUrl(text);
 
-			// Save info - SSL Pinning
-			if (certificate) {
-				UserPreferences.setString(`${CERTIFICATE_KEY}-${server}`, certificate);
-			}
+        // Save info - SSL Pinning
+        if (certificate) {
+            UserPreferences.setString(`${CERTIFICATE_KEY}-${server}`, certificate);
+        }
 
-			// Save info - HTTP Basic Authentication
-			this.basicAuth(server, text);
+        // Save info - HTTP Basic Authentication
+        this.basicAuth(server, text);
 
-			if (fromServerHistory) {
-				dispatch(serverRequest(server, username, true));
-			} else {
-				dispatch(serverRequest(server));
-			}
-		}
+        if (fromServerHistory) {
+            dispatch(serverRequest(server, username, true));
+        } else {
+            dispatch(serverRequest(server));
+        }
 	};
 
 	basicAuth = (server: string, text: string) => {
@@ -272,7 +241,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 			await db.write(async () => {
 				await item.destroyPermanently();
 			});
-			this.setState((prevstate: INewServerViewState) => ({
+			this.setState((prevstate: ICustomServerViewState) => ({
 				serversHistory: prevstate.serversHistory.filter(server => server.id !== item.id)
 			}));
 		} catch {
@@ -281,11 +250,8 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 	};
 
 	renderCertificatePicker = () => {
-		const { certificate, showBottomInfo } = this.state;
+		const { certificate } = this.state;
 		const { theme, connecting } = this.props;
-
-		if (!showBottomInfo) return <></>;
-
 		return (
 			<>
 				<Text style={[styles.buttonPrompt, { color: themes[theme].fontSecondaryInfo }]}>
@@ -308,16 +274,12 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 
 	render() {
 		const { connecting, theme, previousServer } = this.props;
-		const { text, serversHistory, showBottomInfo } = this.state;
+		const { text, serversHistory } = this.state;
 		const marginTop = previousServer ? 32 : 84;
-		const formContainerStyle = previousServer ? { paddingBottom: 100 } : {};
+
 		return (
-			<FormContainer
-				style={formContainerStyle}
-				showAppVersion={showBottomInfo}
-				testID='new-server-view'
-				keyboardShouldPersistTaps='handled'>
-				<FormContainerInner accessibilityLabel={I18n.t('Add_server')}>
+			<FormContainer testID='new-server-view' keyboardShouldPersistTaps='never'>
+				<FormContainerInner>
 					<Image
 						style={[
 							styles.onboardingImage,
@@ -328,32 +290,17 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 								height: 50
 							}
 						]}
-						source={require('../../static/images/logo_with_name.png')}
-						contentFit='contain'
+						source={require('../../static/images/logo_custom.png')}
+						fadeDuration={0}
 					/>
-					<Text
-						style={{
-							fontSize: 24,
-							lineHeight: 36,
-							marginBottom: 24,
-							color: themes[theme].fontTitlesLabels,
-							...sharedStyles.textBold
-						}}>
-						{I18n.t('Add_server')}
-					</Text>
-					<ServerInput
-						text={text}
-						serversHistory={serversHistory}
-						onChangeText={this.onChangeText}
-						onSubmit={this.submit}
-						onDelete={this.deleteServerHistory}
-						onPressServerHistory={this.onPressServerHistory}
-					/>
+					<Text style={{ fontSize: 24, marginBottom: 24, color: themes[theme].fontTitlesLabels, ...sharedStyles.textBold }}>{I18n.t('Welcome_headline')}</Text>
+					<Text style={{ fontSize: 12, marginBottom: 24, color: themes[theme].fontTitlesLabels }}>{I18n.t('Welcome_text')}</Text>
+
 					<Button
 						title={I18n.t('Connect')}
 						type='primary'
 						onPress={this.submit}
-						disabled={!text || connecting}
+						disabled={connecting}
 						loading={connecting}
 						style={styles.connectButton}
 						testID='new-server-view-button'
@@ -370,4 +317,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	previousServer: state.server.previousServer
 });
 
-export default connect(mapStateToProps)(withTheme(NewServerView));
+export default connect(mapStateToProps)(withTheme(CustomServerView));

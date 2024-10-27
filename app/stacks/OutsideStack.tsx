@@ -6,6 +6,8 @@ import { ThemeContext } from '../theme';
 import { defaultHeader, themedHeader } from '../lib/methods/helpers/navigation';
 // Outside Stack
 import NewServerView from '../views/NewServerView';
+//Added for CustomServerView
+import CustomServerView from '../views/CustomServerView';
 import WorkspaceView from '../views/WorkspaceView';
 import LoginView from '../views/LoginView';
 import ForgotPasswordView from '../views/ForgotPasswordView';
@@ -23,6 +25,9 @@ const _OutsideStack = () => {
 	return (
 		<Outside.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
 			{/* @ts-ignore */}
+			{/* Added CustomServerView */}
+			<Outside.Screen name='CustomServerView' component={CustomServerView} options={CustomServerView.navigationOptions} />
+			
 			<Outside.Screen name='NewServerView' component={NewServerView} options={NewServerView.navigationOptions} />
 			<Outside.Screen name='WorkspaceView' component={WorkspaceView} />
 

@@ -734,6 +734,8 @@
   "Waiting_for_answer": "Warten auf Antwort",
   "Waiting_for_network": "Warte auf das Netzwerk …",
   "Websocket_disabled": "Websockets sind auf diesem Server nicht aktiviert.\n{{contact}}",
+  "Welcome_headline": "Willkommen in der CustomApp",
+  "Welcome_text": "Dies ist die Custom Rocket.Chat App",
   "What_are_you_doing_right_now": "Was machen Sie gerade?",
   "Whats_the_password_for_your_certificate": "Wie lautet das Passwort für Ihr Zertifikat?",
   "Without_Servers": "Ohne Server",
