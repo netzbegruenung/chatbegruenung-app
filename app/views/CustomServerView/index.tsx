@@ -65,7 +65,7 @@ class CustomServerView extends React.Component<ICustomServerViewProps, ICustomSe
 
 		this.state = {
             //Add custom server url
-			text: '127.0.0.1',
+			text: 'https:\\chatbegruenung.de',
 			certificate: null,
 			serversHistory: []
 		};
