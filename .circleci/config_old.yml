@@ -1,0 +1,312 @@
+# COMMANDS
+commands:
+  android-build:
+    description: "Build Android app"
+    steps:
+
+      - run:
+          name: Configure Gradle
+          command: |
+            echo -e "" > ./gradle.properties
+            echo -e "android.useAndroidX=true" >> ./gradle.properties
+            echo -e "android.enableJetifier=true" >> ./gradle.properties
+            echo -e "reactNativeArchitectures=armeabi-v7a,arm64-v8a,x86,x86_64" >> ./gradle.properties
+            echo -e "newArchEnabled=false" >> ./gradle.properties
+            echo -e "hermesEnabled=true" >> ./gradle.properties
+            echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
+
+            if [[ $CIRCLE_JOB == "android-build-official" ]]; then
+              echo -e "APPLICATION_ID=chat.rocket.android" >> ./gradle.properties
+              echo -e "BugsnagAPIKey=$BUGSNAG_KEY_OFFICIAL" >> ./gradle.properties
+              echo $KEYSTORE_OFFICIAL_BASE64 | base64 --decode > ./app/$KEYSTORE_OFFICIAL
+              echo -e "KEYSTORE=$KEYSTORE_OFFICIAL" >> ./gradle.properties
+              echo -e "KEYSTORE_PASSWORD=$KEYSTORE_OFFICIAL_PASSWORD" >> ./gradle.properties
+              echo -e "KEY_ALIAS=$KEYSTORE_OFFICIAL_ALIAS" >> ./gradle.properties
+              echo -e "KEY_PASSWORD=$KEYSTORE_OFFICIAL_PASSWORD" >> ./gradle.properties
+            else
+              echo -e "APPLICATION_ID=chat.rocket.reactnative" >> ./gradle.properties
+              echo -e "BugsnagAPIKey=$BUGSNAG_KEY" >> ./gradle.properties
+              echo $KEYSTORE_EXPERIMENTAL_BASE64 | base64 --decode > ./app/$KEYSTORE_EXPERIMENTAL
+              echo -e "KEYSTORE=$KEYSTORE_EXPERIMENTAL" >> ./gradle.properties
+              echo -e "KEYSTORE_PASSWORD=$KEYSTORE_EXPERIMENTAL_PASSWORD" >> ./gradle.properties
+              echo -e "KEY_ALIAS=$KEYSTORE_EXPERIMENTAL_ALIAS" >> ./gradle.properties
+              echo -e "KEY_PASSWORD=$KEYSTORE_EXPERIMENTAL_PASSWORD" >> ./gradle.properties
+            fi
+          working_directory: android
+
+      - run:
+          name: Set Google Services
+          command: |
+            if [[ $GOOGLE_SERVICES_ANDROID ]]; then
+              echo $GOOGLE_SERVICES_ANDROID | base64 --decode > google-services.json
+            fi
+          working_directory: android/app
+
+      - run:
+          name: Build App
+          command: |
+            if [[ $CIRCLE_JOB == "android-build-official" ]]; then
+              ./gradlew bundleOfficialPlayRelease
+            fi
+            if [[ $CIRCLE_JOB == "android-build-experimental" || "android-automatic-build-experimental" ]]; then
+              ./gradlew bundleExperimentalPlayRelease
+            fi
+            if [[ ! $GOOGLE_SERVICES_ANDROID ]]; then
+              ./gradlew assembleExperimentalPlayDebug
+            fi
+          working_directory: android
+
+  ios-build:
+    description: "Build iOS app"
+    steps:
+      - checkout
+      - restore_cache: *restore-gems-cache
+      - restore_cache: *restore-npm-cache-mac
+      - manage-ruby
+      - run: *install-npm-modules
+      - run: *update-fastlane-ios
+      - manage-pods
+      - fetch-supported-versions
+      - run:
+          name: Set Google Services
+          command: |
+            if [[ $APP_STORE_CONNECT_API_KEY_BASE64 ]]; then
+              if [[ $CIRCLE_JOB == "ios-build-official" ]]; then
+                echo $GOOGLE_SERVICES_IOS | base64 --decode > GoogleService-Info.plist
+              else 
+                echo $GOOGLE_SERVICES_IOS_EXPERIMENTAL | base64 --decode > GoogleService-Info.plist
+              fi
+            fi
+          working_directory: ios
+      - run:
+          name: Fastlane Build
+          no_output_timeout: 40m
+          command: |
+            agvtool new-version -all $CIRCLE_BUILD_NUM
+            if [[ $CIRCLE_JOB == "ios-build-official" ]]; then
+              /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY_OFFICIAL" ./RocketChatRN/Info.plist
+              /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY_OFFICIAL" ./ShareRocketChatRN/Info.plist
+              /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./RocketChatRN/Info.plist
+              /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./ShareRocketChatRN/Info.plist
+              /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./NotificationService/Info.plist
+            else
+              /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY" ./RocketChatRN/Info.plist
+              /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY" ./ShareRocketChatRN/Info.plist
+              /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./RocketChatRN/Info.plist
+              /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./ShareRocketChatRN/Info.plist
+              /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./NotificationService/Info.plist
+            fi
+
+            if [[ $APP_STORE_CONNECT_API_KEY_BASE64 ]]; then
+              echo $APP_STORE_CONNECT_API_KEY_BASE64 | base64 --decode > ./fastlane/app_store_connect_api_key.p8
+              if [[ $CIRCLE_JOB == "ios-build-official" ]]; then
+                bundle exec fastlane ios build_official
+              else
+                if [[ $APP_STORE_CONNECT_API_KEY_BASE64 ]]; then
+                  bundle exec fastlane ios build_experimental
+                else
+                  bundle exec fastlane ios build_fork
+                fi
+              fi
+            fi
+          working_directory: ios
+      - save_cache: *save-npm-cache-mac
+      - save_cache: *save-gems-cache
+      - store_artifacts:
+          path: ios/Rocket.Chat.ipa
+      - store_artifacts:
+          path: ios/Rocket.Chat.app.dSYM.zip
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ios/*.ipa
+            - ios/*.zip
+
+  upload-to-google-play-beta:
+    description: "Upload to Google Play beta"
+    parameters:
+      official:
+        type: boolean
+    steps:
+      - checkout
+      - attach_workspace:
+          at: android
+      - run:
+          name: Store the google service account key
+          command: echo "$FASTLANE_GOOGLE_SERVICE_ACCOUNT" | base64 --decode > service_account.json
+          working_directory: android
+      - run: *update-fastlane-android
+      - run:
+          name: Fastlane Play Store Upload
+          command: bundle exec fastlane android beta official:<< parameters.official >>
+          working_directory: android
+
+  # EXPERIMENTAL ONLY
+  upload-to-internal-app-sharing:
+    description: "Upload to Internal App Sharing"
+    steps:
+      - checkout
+      - attach_workspace:
+          at: android
+      - run:
+          name: Store the google service account key
+          command: echo "$FASTLANE_GOOGLE_SERVICE_ACCOUNT" | base64 --decode > service_account.json
+          working_directory: android
+      - run: *update-fastlane-android
+      - run:
+          name: Fastlane Play Store Upload
+          command: bundle exec fastlane android internal_app_sharing
+          working_directory: android
+
+  # No plans to do it for Official
+  upload-to-google-play-production:
+    description: "Upload to Google Play production"
+    steps:
+      - checkout
+      - attach_workspace:
+          at: android
+      - run:
+          name: Store the google service account key
+          command: echo "$FASTLANE_GOOGLE_SERVICE_ACCOUNT" | base64 --decode > service_account.json
+          working_directory: android
+      - run: *update-fastlane-android
+      - run:
+          name: Fastlane Play Store Upload
+          command: bundle exec fastlane android production
+          working_directory: android
+
+  upload-to-testflight:
+    description: "Upload to TestFlight"
+    parameters:
+      official:
+        type: boolean
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ios
+      - restore_cache: *restore-gems-cache
+      - restore_cache: *restore-npm-cache-mac
+      - manage-ruby
+      - run: *install-npm-modules
+      - run: *update-fastlane-ios
+      - manage-pods
+      - run:
+          name: Fastlane Tesflight Upload
+          command: |
+            echo $APP_STORE_CONNECT_API_KEY_BASE64 | base64 --decode > ./fastlane/app_store_connect_api_key.p8
+            bundle exec fastlane ios beta official:<< parameters.official >>
+          working_directory: ios
+      - save_cache: *save-gems-cache
+
+  create-e2e-account-file:
+    description: "Create e2e account file"
+    steps:
+      - run:
+          command: |
+            echo $E2E_ACCOUNT | base64 --decode > ./e2e_account.ts
+          working_directory: e2e
+
+version: 2.1
+
+# EXECUTORS
+executors:
+  mac-env:
+    <<: *macos
+    environment:
+      <<: *bash-env
+
+# JOBS
+jobs:
+  lint-testunit:
+    <<: *defaults
+    docker:
+      - image: cimg/node:lts
+    resource_class: large
+
+    steps:
+      - checkout
+
+      - restore_cache: *restore-npm-cache-linux
+
+      - run: *install-npm-modules
+
+      - run:
+          name: Lint
+          command: |
+            yarn lint
+
+      - run:
+          name: Test
+          command: |
+            yarn test --runInBand
+
+      - save_cache: *save-npm-cache-linux
+
+  android-build-official:
+    environment:
+      <<: *android-env
+      <<: *bash-env
+    steps:
+      - android-build
+
+  android-google-play-production-experimental:
+    docker:
+      - image: cimg/android:2023.11-node
+    steps:
+      - upload-to-google-play-production
+
+  android-google-play-beta-official:
+    docker:
+      - image: cimg/android:2023.11-node
+
+    steps:
+      - upload-to-google-play-beta:
+          official: true
+
+  ios-build-official:
+    executor: mac-env
+    steps:
+      - ios-build
+
+  ios-testflight-official:
+    executor: mac-env
+    steps:
+      - upload-to-testflight:
+          official: true
+
+workflows:
+  build-and-test:
+    jobs:
+      - lint-testunit
+
+      # iOS Official
+      - ios-hold-build-official:
+          type: approval
+          requires:
+            - lint-testunit
+      - ios-build-official:
+          requires:
+            - ios-hold-build-official
+      - ios-hold-testflight-official:
+          type: approval
+          requires:
+            - ios-build-official
+      - ios-testflight-official:
+          requires:
+            - ios-hold-testflight-official
+
+      # Android Official
+      - android-hold-build-official:
+          type: approval
+          requires:
+            - lint-testunit
+      - android-build-official:
+          requires:
+            - android-hold-build-official
+      - android-hold-google-play-beta-official:
+          type: approval
+          requires:
+            - android-build-official
+      - android-google-play-beta-official:
+          requires:
+            - android-hold-google-play-beta-official

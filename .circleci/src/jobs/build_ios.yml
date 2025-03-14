@@ -1,0 +1,24 @@
+macos:
+  xcode: 16.1.0
+environment:
+  FASTLANE_SKIP_UPDATE_CHECK: true
+steps:
+  - checkout
+  - prepare_workspace
+  - restore_environment_variables
+  - fetch-supported-versions
+  - install_node_modules
+  - install_pods
+  - install_fastlane:
+      directory: ios
+  - run:
+      name: '[FL] Build'
+      command: bundle exec fastlane ios build version_name:${NEW_VERSION_NAME} version_code:${NEW_VERSION_CODE}
+      working_directory: ios
+  - store_artifacts:
+      path: ~/app-release.ipa
+      destination: app-release.ipa
+  - persist_to_workspace:
+      root: ~/
+      paths:
+        - app-release.ipa

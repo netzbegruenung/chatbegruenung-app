@@ -1,0 +1,7 @@
+description: "Fetch supported versions from Cloud"
+steps:
+  - run:
+      name: "Fetch supported versions from Cloud"
+      command: sh ./scripts/fetch-supported-versions.sh
+  - store_artifacts:
+      path: ./app-supportedversions.json
