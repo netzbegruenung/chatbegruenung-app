@@ -36,6 +36,7 @@ interface IRoomHeader {
 	showSearchHeader: boolean;
 	width?: number;
 	onSearchChangeText: TextInputProps['onChangeText'];
+	onPress: () => void
 }
 
 const Header = React.memo(
