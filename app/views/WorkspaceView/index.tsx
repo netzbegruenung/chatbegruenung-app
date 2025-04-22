@@ -51,7 +51,9 @@ const WorkspaceView = () => {
 	useLayoutEffect(() => {
 		navigation.setOptions({
 			// Use the app name instead of the server name as header title
-			title: appConfig.name
+			title: appConfig.name,
+			// Hide the back button in the header
+			headerLeft: () => <View />
 		});
 	}, [navigation, workspaceDomain]);
 
