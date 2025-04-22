@@ -3,6 +3,7 @@ import { Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CompositeNavigationProp } from '@react-navigation/core';
+import { shallowEqual } from 'react-redux';
 
 import { OutsideModalParamList, OutsideParamList } from '../../stacks/types';
 import I18n from '../../i18n';
@@ -11,11 +12,12 @@ import { useWorkspaceDomain } from '../../lib/hooks/useWorkspaceDomain';
 import { useTheme } from '../../theme';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
 import { IAssetsFavicon512 } from '../../definitions/IAssetsFavicon512';
-import { getShowLoginButton } from '../../selectors/login';
+import { getShowLoginButton, IServices } from '../../selectors/login';
 import ServerAvatar from './ServerAvatar';
 import styles from './styles';
 import { useAppSelector } from '../../lib/hooks';
 import RegisterDisabledComponent from './RegisterDisabledComponent';
+import * as ServiceLogin from '../../containers/LoginServices/serviceLogin';
 
 type TNavigation = CompositeNavigationProp<
 	NativeStackNavigationProp<OutsideParamList, 'WorkspaceView'>,
@@ -41,6 +43,8 @@ const WorkspaceView = () => {
 
 	const workspaceDomain = useWorkspaceDomain();
 
+	const services = useAppSelector(state => state.login.services as IServices, shallowEqual);
+
 	const {
 		Accounts_iframe_enabled,
 		Assets_favicon_512,
@@ -64,11 +68,8 @@ const WorkspaceView = () => {
 	);
 
 	const login = () => {
-		if (Accounts_iframe_enabled) {
-			navigation.navigate('AuthenticationWebView', { url: server, authType: 'iframe' });
-			return;
-		}
-		navigation.navigate('LoginView', { title: workspaceDomain });
+		// Directly use the only configured login via saml to avoid the need for a second click on a login button
+		ServiceLogin.onPressSaml({ loginService: Object.values(services)[0], server });
 	};
 
 	const register = () => {
