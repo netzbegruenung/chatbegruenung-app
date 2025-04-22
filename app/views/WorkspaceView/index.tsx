@@ -16,6 +16,7 @@ import { getShowLoginButton, type IServices } from '../../selectors/login';
 import ServerAvatar from './ServerAvatar';
 import styles from './styles';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import appConfig from '../../../app.json';
 import * as ServiceLogin from '../../containers/LoginServices/serviceLogin';
 
 type TNavigation = CompositeNavigationProp<
@@ -44,20 +45,13 @@ const WorkspaceView = () => {
 
 	const services = useAppSelector(state => state.login.services as IServices, shallowEqual);
 
-	const {
-		Accounts_iframe_enabled,
-		Assets_favicon_512,
-		Site_Name,
-		Site_Url,
-		inviteLinkToken,
-		registrationForm,
-		server,
-		showLoginButton
-	} = useWorkspaceViewSelector();
+	const { Accounts_iframe_enabled, Assets_favicon_512, Site_Url, inviteLinkToken, registrationForm, server, showLoginButton } =
+		useWorkspaceViewSelector();
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
-			title: workspaceDomain
+			// Use the app name instead of the server name as header title
+			title: appConfig.name
 		});
 	}, [navigation, workspaceDomain]);
 
@@ -80,7 +74,8 @@ const WorkspaceView = () => {
 			<FormContainerInner>
 				<View style={styles.alignItemsCenter}>
 					<ServerAvatar url={server} image={Assets_favicon_512?.url ?? Assets_favicon_512?.defaultUrl} />
-					<Text style={[styles.serverName, { color: colors.fontTitlesLabels }]}>{Site_Name}</Text>
+					{/* Display the app name instead of the server name */}
+					<Text style={[styles.serverName, { color: colors.fontTitlesLabels }]}>{appConfig.name}</Text>
 					<Text style={[styles.serverUrl, { color: colors.fontSecondaryInfo }]}>{Site_Url}</Text>
 				</View>
 				{showLoginButton ? <Button title={I18n.t('Login')} type='primary' onPress={login} testID='workspace-view-login' /> : null}
