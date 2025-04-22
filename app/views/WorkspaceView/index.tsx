@@ -16,7 +16,6 @@ import { getShowLoginButton, type IServices } from '../../selectors/login';
 import ServerAvatar from './ServerAvatar';
 import styles from './styles';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import RegisterDisabledComponent from './RegisterDisabledComponent';
 import * as ServiceLogin from '../../containers/LoginServices/serviceLogin';
 
 type TNavigation = CompositeNavigationProp<
@@ -85,11 +84,10 @@ const WorkspaceView = () => {
 					<Text style={[styles.serverUrl, { color: colors.fontSecondaryInfo }]}>{Site_Url}</Text>
 				</View>
 				{showLoginButton ? <Button title={I18n.t('Login')} type='primary' onPress={login} testID='workspace-view-login' /> : null}
+				{/* Hide login via GrünesNetz hint as we directly open the login  */}
 				{showRegistrationButton ? (
 					<Button title={I18n.t('Create_account')} type='secondary' onPress={register} testID='workspace-view-register' />
-				) : (
-					<RegisterDisabledComponent />
-				)}
+				) : null}
 			</FormContainerInner>
 		</FormContainer>
 	);
