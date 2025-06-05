@@ -4,7 +4,6 @@
 #import "RNNotifications.h"
 #import "RNBootSplash.h"
 #import <Firebase.h>
-#import <Bugsnag/Bugsnag.h>
 #import <MMKV/MMKV.h>
 
 @implementation AppDelegate
@@ -14,8 +13,7 @@
   if(![FIRApp defaultApp]){
     [FIRApp configure];
   }
-  [Bugsnag start];
-  
+
   // AppGroup MMKV
   NSString *groupDir = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"]].path;
   [MMKV initializeMMKV:nil groupDir:groupDir logLevel:MMKVLogDebug];

@@ -20,7 +20,6 @@ import com.wix.reactnativenotifications.core.AppLifecycleFacade
 import com.wix.reactnativenotifications.core.JsIOHelper
 import com.wix.reactnativenotifications.core.notification.INotificationsApplication
 import com.wix.reactnativenotifications.core.notification.IPushNotification
-import com.bugsnag.android.Bugsnag
 import expo.modules.ApplicationLifecycleDispatcher
 import chat.rocket.reactnative.networking.SSLPinningPackage;
 import chat.rocket.reactnative.notification.CustomPushNotification;
@@ -52,7 +51,6 @@ open class MainApplication : Application(), ReactApplication, INotificationsAppl
   override fun onCreate() {
     super.onCreate()
     SoLoader.init(this, false)
-    Bugsnag.start(this)
 
     if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
       // If you opted-in for the New Architecture, we load the native entry point for this app.
