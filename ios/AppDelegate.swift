@@ -2,7 +2,6 @@ import Expo
 import React
 import ReactAppDependencyProvider
 import Firebase
-import Bugsnag
 import MMKV
 import WatchConnectivity
 
@@ -20,8 +19,7 @@ public class AppDelegate: ExpoAppDelegate {
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
     FirebaseApp.configure()
-    Bugsnag.start()
-    
+
     // Initialize MMKV with app group
     if let appGroup = Bundle.main.object(forInfoDictionaryKey: "AppGroup") as? String,
        let groupDir = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup)?.path {
