@@ -101,9 +101,6 @@
                 <action android:name="chat.rocket.reactnative.ACTION_VIDEO_CONF_DECLINE" />
             </intent-filter>
         </receiver>
-        <meta-data
-            android:name="com.bugsnag.android.API_KEY"
-            android:value="${BugsnagAPIKey}" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"

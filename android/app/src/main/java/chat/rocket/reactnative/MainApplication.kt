@@ -13,7 +13,6 @@ import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.react.soloader.OpenSourceMergedSoMapping
 import com.facebook.soloader.SoLoader
 import com.nozbe.watermelondb.jsi.WatermelonDBJSIPackage;
-import com.bugsnag.android.Bugsnag
 import expo.modules.ApplicationLifecycleDispatcher
 import chat.rocket.reactnative.networking.SSLPinningTurboPackage;
 import chat.rocket.reactnative.storage.MMKVKeyManager;
@@ -24,7 +23,7 @@ import chat.rocket.reactnative.scroll.InvertedScrollPackage
 
 /**
  * Main Application class.
- * 
+ *
  * NOTIFICATION ARCHITECTURE:
  * - JS layer uses expo-notifications for token registration and event handling
  * - Native layer uses RCFirebaseMessagingService + CustomPushNotification for:
@@ -62,15 +61,14 @@ open class MainApplication : Application(), ReactApplication {
   override fun onCreate() {
     super.onCreate()
     SoLoader.init(this, OpenSourceMergedSoMapping)
-    Bugsnag.start(this)
-    
+
     // Initialize MMKV encryption - reads existing key or generates new one
     // Must run before React Native starts to avoid race conditions
     MMKVKeyManager.initialize(this)
 
     // Load the native entry point for the New Architecture
     load()
-    
+
 		ApplicationLifecycleDispatcher.onApplicationCreate(this)
   }
 

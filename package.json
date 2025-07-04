@@ -20,11 +20,9 @@
 		"organize-translations": "node scripts/organize-translations.js",
 		"e2e:start": "RUNNING_E2E_TESTS=true npx react-native start",
 		"storybook:start": "USE_STORYBOOK=true npx react-native start --reset-cache",
-		"storybook-generate": "sb-rn-get-stories",
-		"bugsnag:upload-android": "bugsnag-cli upload react-native-android"
+		"storybook-generate": "sb-rn-get-stories"
 	},
 	"dependencies": {
-		"@bugsnag/react-native": "8.4.0",
 		"@expo/vector-icons": "^14.1.0",
 		"@hookform/resolvers": "^2.9.10",
 		"@lodev09/react-native-true-sheet": "~3.7.0",
@@ -37,9 +35,7 @@
 		"@react-native-community/netinfo": "^11.3.1",
 		"@react-native-community/slider": "^4.5.0",
 		"@react-native-cookies/cookies": "6.2.1",
-		"@react-native-firebase/analytics": "^21.12.2",
 		"@react-native-firebase/app": "^21.12.2",
-		"@react-native-firebase/crashlytics": "^21.12.2",
 		"@react-native-masked-view/masked-view": "^0.3.1",
 		"@react-native-picker/picker": "^2.11.0",
 		"@react-native/codegen": "^0.80.0",
@@ -146,8 +142,6 @@
 		"@babel/plugin-transform-named-capturing-groups-regex": "~7.25.9",
 		"@babel/preset-env": "~7.25.9",
 		"@babel/runtime": "~7.25.9",
-		"@bugsnag/cli": "^3.2.1",
-		"@bugsnag/source-maps": "^2.3.3",
 		"@gorhom/bottom-sheet": "^5",
 		"@react-native-community/cli": "18.0.0",
 		"@react-native-community/cli-platform-android": "18.0.0",

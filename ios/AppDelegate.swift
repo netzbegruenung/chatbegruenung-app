@@ -2,7 +2,6 @@ import Expo
 import React
 import ReactAppDependencyProvider
 import Firebase
-import Bugsnag
 import WatchConnectivity
 
 @UIApplicationMain
@@ -21,9 +20,8 @@ public class AppDelegate: ExpoAppDelegate {
     // This reads existing encryption key or generates a new one for fresh installs
     // Must run before Firebase, Bugsnag, and React Native start
     MMKVKeyManager.initialize()
-    
+
     FirebaseApp.configure()
-    Bugsnag.start()
     ReplyNotification.configure()
       
     let delegate = ReactNativeDelegate()

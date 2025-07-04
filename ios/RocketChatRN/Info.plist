@@ -109,10 +109,5 @@
 	<array>
 		<string>INSendMessageIntent</string>
 	</array>
-	<key>bugsnag</key>
-	<dict>
-		<key>apiKey</key>
-		<string>apiKeyValue</string>
-	</dict>
 </dict>
 </plist>
