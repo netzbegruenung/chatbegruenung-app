@@ -28,11 +28,9 @@
 		"e2e:ios-test": "yarn detox test -c ios.sim.release",
 		"e2e:start": "RUNNING_E2E_TESTS=true npx react-native start",
 		"storybook:start": "USE_STORYBOOK=true npx react-native start --reset-cache",
-		"storybook-generate": "sb-rn-get-stories",
-		"bugsnag:upload-android": "bugsnag-cli upload react-native-android"
+		"storybook-generate": "sb-rn-get-stories"
 	},
 	"dependencies": {
-		"@bugsnag/react-native": "^8.3.0",
 		"@discord/bottom-sheet": "bluesky-social/react-native-bottom-sheet",
 		"@hookform/resolvers": "^2.9.10",
 		"@notifee/react-native": "7.8.2",
@@ -158,8 +156,6 @@
 		"@babel/plugin-transform-named-capturing-groups-regex": "^7.22.5",
 		"@babel/preset-env": "^7.25.3",
 		"@babel/runtime": "^7.25.0",
-		"@bugsnag/cli": "^2.9.2",
-		"@bugsnag/source-maps": "^2.3.3",
 		"@gorhom/bottom-sheet": "^5.1.6",
 		"@react-native-community/cli": "18.0.0",
 		"@react-native-community/cli-platform-android": "18.0.0",

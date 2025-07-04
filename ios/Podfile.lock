@@ -1,29 +1,5 @@
 PODS:
   - boost (1.84.0)
-  - BugsnagReactNative (8.3.0):
-    - DoubleConversion
-    - glog
-    - hermes-engine
-    - RCT-Folly (= 2024.11.18.00)
-    - RCTRequired
-    - RCTTypeSafety
-    - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-hermes
-    - React-ImageManager
-    - React-jsi
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-renderercss
-    - React-rendererdebug
-    - React-utils
-    - ReactCodegen
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - Yoga
   - BVLinearGradient (2.6.2):
     - React-Core
   - DoubleConversion (1.1.6)
@@ -1528,6 +1504,31 @@ PODS:
     - React-hermes
     - React-ImageManager
     - React-jsi
+    - react-native-keyboard-controller/common (= 1.17.1)
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
+  - react-native-keyboard-controller/common (1.17.1):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.11.18.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-hermes
+    - React-ImageManager
+    - React-jsi
     - React-NativeModulesApple
     - React-RCTFabric
     - React-renderercss
@@ -2465,7 +2466,6 @@ PODS:
 
 DEPENDENCIES:
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
-  - "BugsnagReactNative (from `../node_modules/@bugsnag/react-native`)"
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EXAV (from `../node_modules/expo-av/ios`)
@@ -2612,8 +2612,6 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   boost:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
-  BugsnagReactNative:
-    :path: "../node_modules/@bugsnag/react-native"
   BVLinearGradient:
     :path: "../node_modules/react-native-linear-gradient"
   DoubleConversion:
@@ -2858,7 +2856,6 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   boost: 7e761d76ca2ce687f7cc98e698152abd03a18f90
-  BugsnagReactNative: 7c0f32472597ed170d30d29a31e1e7371a236fab
   BVLinearGradient: 7815a70ab485b7b155186dd0cc836363e0288cad
   DoubleConversion: fea03f2699887d960129cc54bba7e52542b6f953
   EXAV: 90c33266835bf7e61dc0731fa8d82833d22d286f
@@ -2874,7 +2871,7 @@ SPEC CHECKSUMS:
   ExpoImage: 785f7673cfecd97045cf333fd6486b57ccab4b71
   ExpoKeepAwake: 213acedecafb6fda8c0ffedad22ee9e2903400c5
   ExpoLocalAuthentication: f69863a1822e42db67a311ce839ecbac70e7fa65
-  ExpoModulesCore: 92329f3b150939f631068bf4fa54331e55b09244
+  ExpoModulesCore: b4fdeaceca6a4360d4a75fbae335907427c1df6b
   ExpoSystemUI: 82c970cf8495449698e7343b4f78a0d04bcec9ee
   ExpoVideoThumbnails: 2a448a23eb4eeb860d92ded372fec6e6a7a0cdcb
   ExpoWebBrowser: d81a92137919312afc5628d47951dc7a35554f90
@@ -2927,7 +2924,7 @@ SPEC CHECKSUMS:
   react-native-background-timer: 4638ae3bee00320753647900b21260b10587b6f7
   react-native-cameraroll: cc723d75806e404b5206c4a6a0c3518352aef506
   react-native-cookies: d648ab7025833b977c0b19e142503034f5f29411
-  react-native-keyboard-controller: 3fa890cbbc508b09b895781ff3d8ee1b5c96d97d
+  react-native-keyboard-controller: 9ec7ee23328c30251a399cffd8b54324a00343bf
   react-native-mmkv-storage: 1ece3df3c6cb8919ce546d037ec322d13e1b43d6
   react-native-netinfo: 2e3c27627db7d49ba412bfab25834e679db41e21
   react-native-notifications: 3bafa1237ae8a47569a84801f17d80242fe9f6a5
