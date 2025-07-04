@@ -18,11 +18,11 @@ default_platform :ios
 platform :ios do
   before_all do
     setup_circle_ci	
-    create_keychain(	
-      name: ENV["MATCH_KEYCHAIN_NAME"],	
-      password: ENV["MATCH_KEYCHAIN_PASSWORD"],	
-      timeout: 1200	
-    )	
+    create_keychain(
+      name: ENV["MATCH_KEYCHAIN_NAME"],
+      password: ENV["MATCH_KEYCHAIN_PASSWORD"],
+      timeout: 1200
+    )
   end
 
   desc "Submit a new Beta Build to Apple TestFlight"
@@ -34,8 +34,8 @@ platform :ios do
       in_house: false
     )
     pilot(
-      ipa: 'ios/Rocket.Chat.ipa',
-      app_identifier: options[:official] ? 'chat.rocket.ios' : 'chat.rocket.reactnative',
+      ipa: 'ios/chatbegruenung.ipa',
+      app_identifier: 'app.chatbegruenung',
       skip_waiting_for_build_processing: true
     )
   end
@@ -48,15 +48,17 @@ platform :ios do
       key_filepath: 'fastlane/app_store_connect_api_key.p8',
       in_house: false
     )
-    match(type: "appstore")
-    get_provisioning_profile(app_identifier: "chat.rocket.reactnative.ShareExtension")
-    get_provisioning_profile(app_identifier: "chat.rocket.reactnative.NotificationService")
-    get_provisioning_profile(app_identifier: "chat.rocket.reactnative.watchkitapp")
+    match(
+      type: "appstore",
+      app_identifier: ["app.chatbegruenung", "app.chatbegruenung.ShareExtension", "app.chatbegruenung.NotificationService", "app.chatbegruenung.watchkitapp"],
+      readonly: true,
+    )
     # pem(api_key: api_key) # still uses Spaceship http://docs.fastlane.tools/actions/pem/#how-does-it-work
     gym(
       scheme: "RocketChatRN",
       workspace: "RocketChatRN.xcworkspace",
-      output_name: "Rocket.Chat"
+      export_method: "app-store",
+      output_name: "chatbegruenung"
     )
   end
 
@@ -106,10 +108,10 @@ platform :ios do
   end
 
   after_all do |lane|
-    delete_keychain(name: ENV["MATCH_KEYCHAIN_NAME"])	
-  end	
+    delete_keychain(name: ENV["MATCH_KEYCHAIN_NAME"])
+  end
 
   error do |lane, exception|
-    delete_keychain(name: ENV["MATCH_KEYCHAIN_NAME"])	
+    delete_keychain(name: ENV["MATCH_KEYCHAIN_NAME"])
   end
 end
