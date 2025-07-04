@@ -23,7 +23,6 @@ import com.wix.reactnativenotifications.core.AppLifecycleFacade
 import com.wix.reactnativenotifications.core.JsIOHelper
 import com.wix.reactnativenotifications.core.notification.INotificationsApplication
 import com.wix.reactnativenotifications.core.notification.IPushNotification
-import com.bugsnag.android.Bugsnag
 import expo.modules.ApplicationLifecycleDispatcher
 import chat.rocket.reactnative.networking.SSLPinningTurboPackage;
 import chat.rocket.reactnative.notification.CustomPushNotification;
@@ -52,18 +51,17 @@ open class MainApplication : Application(), ReactApplication, INotificationsAppl
   override fun onCreate() {
     super.onCreate()
     SoLoader.init(this, OpenSourceMergedSoMapping)
-    Bugsnag.start(this)
 
     // Load the native entry point for the New Architecture
     load()
-    
-    // Register listener to set React context when initialized
+
+// Register listener to set React context when initialized
     reactHost.addReactInstanceEventListener(object : ReactInstanceEventListener {
       override fun onReactContextInitialized(context: ReactContext) {
         CustomPushNotification.setReactContext(context as ReactApplicationContext)
       }
     })
-    
+
 		ApplicationLifecycleDispatcher.onApplicationCreate(this)
   }
 
