@@ -217,7 +217,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		// Return server version even when offline
 		const serverVersion = serverInfo?.version || version;
 
-		// we'll set serverVersion as metadata for bugsnag
+		// we'll set serverVersion as metadata
 		logServerVersion(serverVersion);
 		yield put(selectServerSuccess({ server, version: serverVersion, name: serverInfo?.name || 'Rocket.Chat' }));
 	} catch (e) {

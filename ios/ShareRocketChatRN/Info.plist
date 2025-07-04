@@ -67,10 +67,5 @@
 		<string>custom.ttf</string>
 		<string>Inter.ttf</string>
 	</array>
-	<key>bugsnag</key>
-	<dict>
-		<key>apiKey</key>
-		<string>apiKeyValue</string>
-	</dict>
 </dict>
 </plist>

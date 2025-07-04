@@ -152,7 +152,6 @@ commands:
 
             if [[ $CIRCLE_JOB == "android-build-official" ]]; then
               echo -e "APPLICATION_ID=chat.rocket.android" >> ./gradle.properties
-              echo -e "BugsnagAPIKey=$BUGSNAG_KEY_OFFICIAL" >> ./gradle.properties
               echo $KEYSTORE_OFFICIAL_BASE64 | base64 --decode > ./app/$KEYSTORE_OFFICIAL
               echo -e "KEYSTORE=$KEYSTORE_OFFICIAL" >> ./gradle.properties
               echo -e "KEYSTORE_PASSWORD=$KEYSTORE_OFFICIAL_PASSWORD" >> ./gradle.properties
@@ -160,7 +159,6 @@ commands:
               echo -e "KEY_PASSWORD=$KEYSTORE_OFFICIAL_PASSWORD" >> ./gradle.properties
             else
               echo -e "APPLICATION_ID=chat.rocket.reactnative" >> ./gradle.properties
-              echo -e "BugsnagAPIKey=$BUGSNAG_KEY" >> ./gradle.properties
               echo $KEYSTORE_EXPERIMENTAL_BASE64 | base64 --decode > ./app/$KEYSTORE_EXPERIMENTAL
               echo -e "KEYSTORE=$KEYSTORE_EXPERIMENTAL" >> ./gradle.properties
               echo -e "KEYSTORE_PASSWORD=$KEYSTORE_EXPERIMENTAL_PASSWORD" >> ./gradle.properties
@@ -190,18 +188,6 @@ commands:
               ./gradlew assembleExperimentalDebug
             fi
           working_directory: android
-
-      - run:
-          name: Upload sourcemaps/NDK symbols to Bugsnag
-          command: |
-            if [[ $CIRCLE_JOB == "android-build-official" ]]; then
-              yarn bugsnag:upload-android --variant officialRelease --app-manifest android/app/build/intermediates/merged_manifests/officialRelease/processOfficialReleaseManifest/AndroidManifest.xml
-              yarn bugsnag-cli upload android-aab android/app/build/outputs/bundle/officialRelease/app-official-release.aab
-            fi
-            if [[ $CIRCLE_JOB == "android-build-experimental" || "android-automatic-build-experimental" ]]; then
-              yarn bugsnag:upload-android --variant experimentalRelease --app-manifest android/app/build/intermediates/merged_manifests/experimentalRelease/processExperimentalReleaseManifest/AndroidManifest.xml
-              yarn bugsnag-cli upload android-aab android/app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab
-            fi
 
       - store_artifacts:
           path: android/app/build/outputs
@@ -243,14 +229,10 @@ commands:
           command: |
             agvtool new-version -all $CIRCLE_BUILD_NUM
             if [[ $CIRCLE_JOB == "ios-build-official" ]]; then
-              /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY_OFFICIAL" ./RocketChatRN/Info.plist
-              /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY_OFFICIAL" ./ShareRocketChatRN/Info.plist
               /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./RocketChatRN/Info.plist
               /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./ShareRocketChatRN/Info.plist
               /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./NotificationService/Info.plist
             else
-              /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY" ./RocketChatRN/Info.plist
-              /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY" ./ShareRocketChatRN/Info.plist
               /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./RocketChatRN/Info.plist
               /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./ShareRocketChatRN/Info.plist
               /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./NotificationService/Info.plist
@@ -486,7 +468,6 @@ jobs:
             echo -e "hermesEnabled=true" >> ./gradle.properties
             echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
             echo -e "APPLICATION_ID=chat.rocket.reactnative" >> ./gradle.properties
-            echo -e "BugsnagAPIKey=$BUGSNAG_KEY" >> ./gradle.properties
             echo $KEYSTORE_EXPERIMENTAL_BASE64 | base64 --decode > ./app/$KEYSTORE_EXPERIMENTAL
             echo -e "KEYSTORE=$KEYSTORE_EXPERIMENTAL" >> ./gradle.properties
             echo -e "KEYSTORE_PASSWORD=$KEYSTORE_EXPERIMENTAL_PASSWORD" >> ./gradle.properties
@@ -584,8 +565,6 @@ jobs:
       - run:
           name: Build
           command: |
-            /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY" ./ios/RocketChatRN/Info.plist
-            /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY" ./ios/ShareRocketChatRN/Info.plist
             yarn detox clean-framework-cache && yarn detox build-framework-cache
             export RUNNING_E2E_TESTS=true
             yarn e2e:ios-build

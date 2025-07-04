@@ -2,8 +2,6 @@ apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 
-apply plugin: 'com.google.firebase.crashlytics'
-
 /**
  * This is the configuration block to customize your React Native Android app.
  * By default you don't need to apply any configuration, just uncomment the lines you need.
@@ -92,7 +90,6 @@ android {
         versionCode VERSIONCODE as Integer
         versionName "4.64.0"
         vectorDrawables.useSupportLibrary = true
-        manifestPlaceholders = [BugsnagAPIKey: BugsnagAPIKey as String]
         missingDimensionStrategy "RNNotifications.reactNativeVersion", "reactNative60" // See note below!
         resValue "string", "rn_config_reader_custom_package", "chat.rocket.reactnative"
         testBuildType System.getProperty('testBuildType', 'debug')
@@ -115,11 +112,6 @@ android {
             signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-            firebaseCrashlytics {
-                nativeSymbolUploadEnabled true
-                strippedNativeLibsDir 'build/intermediates/stripped_native_libs/release/out/lib'
-                unstrippedNativeLibsDir 'build/intermediates/merged_native_libs/release/out/lib'
-            }
         }
     }
 
