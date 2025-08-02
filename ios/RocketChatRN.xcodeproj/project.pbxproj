@@ -251,7 +251,7 @@
 		1ED1ECD72B86997F00F6620C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1ED038972B507B4D00C007D4 /* Preview Assets.xcassets */; };
 		1ED1ECD82B86997F00F6620C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1ED038942B507B4D00C007D4 /* Assets.xcassets */; };
 		1ED1ECE42B8699E900F6620C /* Rocket.Chat Watch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 1ED0388E2B507B4B00C007D4 /* Rocket.Chat Watch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		1ED1ECE72B8699ED00F6620C /* Rocket.Chat Experimental Watch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 1ED1ECDD2B86997F00F6620C /* Rocket.Chat Experimental Watch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		1ED1ECE72B8699ED00F6620C /* chatbegruenung Watch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 1ED1ECDD2B86997F00F6620C /* chatbegruenung Watch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		1ED1ECEA2B869A4A00F6620C /* Official.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A14FCF3257FEB59005BDCD4 /* Official.xcassets */; };
 		1ED1ECEC2B869B1300F6620C /* Experimental.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A14FCEC257FEB3A005BDCD4 /* Experimental.xcassets */; };
 		1EDB30F22B5B453A00532C7E /* LoggedInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EDB30F12B5B453A00532C7E /* LoggedInView.swift */; };
@@ -280,6 +280,7 @@
 		65AD383C2BFBDF4A00271B39 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 65AD38362BFBDF4A00271B39 /* PrivacyInfo.xcprivacy */; };
 		65B9A71A2AFC24190088956F /* ringtone.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 65B9A7192AFC24190088956F /* ringtone.mp3 */; };
 		65B9A71B2AFC24190088956F /* ringtone.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 65B9A7192AFC24190088956F /* ringtone.mp3 */; };
+		70A0E5102E3A1EB900FF07D3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 70A0E50F2E3A1EB900FF07D3 /* GoogleService-Info.plist */; };
 		7A0129D42C6E8EC800F84A97 /* ShareRocketChatRN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0129D22C6E8B5900F84A97 /* ShareRocketChatRN.swift */; };
 		7A0129D62C6E8F0700F84A97 /* ShareRocketChatRN.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 1EC6AD6022CBA20C00A41C61 /* ShareRocketChatRN.entitlements */; };
 		7A0129EA2C6E921600F84A97 /* MainInterface.storyboard in Sources */ = {isa = PBXBuildFile; fileRef = 1EC6ACB522CB9FC300A41C61 /* MainInterface.storyboard */; };
@@ -419,7 +420,7 @@
 			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
 			dstSubfolderSpec = 16;
 			files = (
-				1ED1ECE72B8699ED00F6620C /* Rocket.Chat Experimental Watch.app in Embed Watch Content */,
+				1ED1ECE72B8699ED00F6620C /* chatbegruenung Watch.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -452,7 +453,7 @@
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		06BB44DD4855498082A744AD /* libz.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
-		13B07F961A680F5B00A75B9A /* Rocket.Chat Experimental.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Rocket.Chat Experimental.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* chatbegruenung.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = chatbegruenung.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = RocketChatRN/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = RocketChatRN/Info.plist; sourceTree = "<group>"; };
 		194D9A8897F4A486C2C6F89A /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-defaults-NotificationService/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
@@ -583,7 +584,7 @@
 		1ED038C32B50A1F500C007D4 /* WatchMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchMessage.swift; sourceTree = "<group>"; };
 		1ED038C92B50A58400C007D4 /* ServersLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersLoader.swift; sourceTree = "<group>"; };
 		1ED1EC882B867E2400F6620C /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
-		1ED1ECDD2B86997F00F6620C /* Rocket.Chat Experimental Watch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Rocket.Chat Experimental Watch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1ED1ECDD2B86997F00F6620C /* chatbegruenung Watch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = "chatbegruenung Watch.app"; path = "chatbegruenung Watch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1EDB30F12B5B453A00532C7E /* LoggedInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggedInView.swift; sourceTree = "<group>"; };
 		1EDFD0F92B589B8F002FEE5F /* MessagesLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesLoader.swift; sourceTree = "<group>"; };
 		1EDFD1052B58A66E002FEE5F /* CancelBag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelBag.swift; sourceTree = "<group>"; };
@@ -609,6 +610,7 @@
 		60B2A6A31FC4588700BD58E5 /* RocketChatRN.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = RocketChatRN.entitlements; path = RocketChatRN/RocketChatRN.entitlements; sourceTree = "<group>"; };
 		65AD38362BFBDF4A00271B39 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		65B9A7192AFC24190088956F /* ringtone.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ringtone.mp3; sourceTree = "<group>"; };
+		70A0E50F2E3A1EB900FF07D3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7A0129D22C6E8B5900F84A97 /* ShareRocketChatRN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareRocketChatRN.swift; sourceTree = "<group>"; };
 		7A0D62D1242AB187006D5C06 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7A14FCEC257FEB3A005BDCD4 /* Experimental.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Experimental.xcassets; sourceTree = "<group>"; };
@@ -719,6 +721,7 @@
 				7A0D62D1242AB187006D5C06 /* LaunchScreen.storyboard */,
 				1ED00BB02513E04400A1331F /* ReplyNotification.swift */,
 				65AD38362BFBDF4A00271B39 /* PrivacyInfo.xcprivacy */,
+				70A0E50F2E3A1EB900FF07D3 /* GoogleService-Info.plist */,
 			);
 			name = RocketChatRN;
 			sourceTree = "<group>";
@@ -1159,12 +1162,12 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* Rocket.Chat Experimental.app */,
+				13B07F961A680F5B00A75B9A /* chatbegruenung.app */,
 				1EC6ACB022CB9FC300A41C61 /* ShareRocketChatRN.appex */,
 				1EFEB5952493B6640072EDC0 /* NotificationService.appex */,
 				7AAB3E52257E6A6E00707CF6 /* Rocket.Chat.app */,
 				1ED0388E2B507B4B00C007D4 /* Rocket.Chat Watch.app */,
-				1ED1ECDD2B86997F00F6620C /* Rocket.Chat Experimental Watch.app */,
+				1ED1ECDD2B86997F00F6620C /* chatbegruenung Watch.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1264,7 +1267,7 @@
 			);
 			name = RocketChatRN;
 			productName = "Hello World";
-			productReference = 13B07F961A680F5B00A75B9A /* Rocket.Chat Experimental.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* chatbegruenung.app */;
 			productType = "com.apple.product-type.application";
 		};
 		1EC6ACAF22CB9FC300A41C61 /* ShareRocketChatRN */ = {
@@ -1314,7 +1317,7 @@
 			);
 			name = "RocketChatRN Watch";
 			productName = "RocketChat Watch App";
-			productReference = 1ED1ECDD2B86997F00F6620C /* Rocket.Chat Experimental Watch.app */;
+			productReference = 1ED1ECDD2B86997F00F6620C /* chatbegruenung Watch.app */;
 			productType = "com.apple.product-type.application";
 		};
 		1EFEB5942493B6640072EDC0 /* NotificationService */ = {
@@ -1374,6 +1377,9 @@
 			isa = PBXProject;
 			attributes = {
 				DefaultBuildSystemTypeForWorkspace = Original;
+				KnownAssetTags = (
+					New,
+				);
 				LastSwiftUpdateCheck = 1530;
 				LastUpgradeCheck = 1130;
 				ORGANIZATIONNAME = Facebook;
@@ -1459,6 +1465,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				65B9A71A2AFC24190088956F /* ringtone.mp3 in Resources */,
+				70A0E5102E3A1EB900FF07D3 /* GoogleService-Info.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				7A610CD227ECE38100B8ABDD /* custom.ttf in Resources */,
 				7A14FCED257FEB3A005BDCD4 /* Experimental.xcassets in Resources */,
@@ -1514,6 +1521,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				65B9A71B2AFC24190088956F /* ringtone.mp3 in Resources */,
+				70A0E5112E3A1EB900FF07D3 /* GoogleService-Info.plist in Resources */,
 				7A14FCF4257FEB59005BDCD4 /* Official.xcassets in Resources */,
 				7A610CD527ECE38100B8ABDD /* custom.ttf in Resources */,
 				7AAB3E42257E6A6E00707CF6 /* Images.xcassets in Resources */,
@@ -1538,24 +1546,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export EXTRA_PACKAGER_ARGS=\"--sourcemap-output $TMPDIR/$(md5 -qs \"$CONFIGURATION_BUILD_DIR\")-main.jsbundle.map\"\nexport NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
-		};
-		1E1EA8082326CCE300E22452 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "echo \"Target architectures: $ARCHS\"\n\nAPP_PATH=\"${TARGET_BUILD_DIR}/${WRAPPER_NAME}\"\n\nfind \"$APP_PATH\" -name '*.framework' -type d | while read -r FRAMEWORK\ndo\nFRAMEWORK_EXECUTABLE_NAME=$(defaults read \"$FRAMEWORK/Info.plist\" CFBundleExecutable)\nFRAMEWORK_EXECUTABLE_PATH=\"$FRAMEWORK/$FRAMEWORK_EXECUTABLE_NAME\"\necho \"Executable is $FRAMEWORK_EXECUTABLE_PATH\"\necho $(lipo -info \"$FRAMEWORK_EXECUTABLE_PATH\")\n\nFRAMEWORK_TMP_PATH=\"$FRAMEWORK_EXECUTABLE_PATH-tmp\"\n\n# remove simulator's archs if location is not simulator's directory\ncase \"${TARGET_BUILD_DIR}\" in\n*\"iphonesimulator\")\necho \"No need to remove archs\"\n;;\n*)\nif $(lipo \"$FRAMEWORK_EXECUTABLE_PATH\" -verify_arch \"i386\") ; then\nlipo -output \"$FRAMEWORK_TMP_PATH\" -remove \"i386\" \"$FRAMEWORK_EXECUTABLE_PATH\"\necho \"i386 architecture removed\"\nrm \"$FRAMEWORK_EXECUTABLE_PATH\"\nmv \"$FRAMEWORK_TMP_PATH\" \"$FRAMEWORK_EXECUTABLE_PATH\"\nfi\nif $(lipo \"$FRAMEWORK_EXECUTABLE_PATH\" -verify_arch \"x86_64\") ; then\nlipo -output \"$FRAMEWORK_TMP_PATH\" -remove \"x86_64\" \"$FRAMEWORK_EXECUTABLE_PATH\"\necho \"x86_64 architecture removed\"\nrm \"$FRAMEWORK_EXECUTABLE_PATH\"\nmv \"$FRAMEWORK_TMP_PATH\" \"$FRAMEWORK_EXECUTABLE_PATH\"\nfi\n;;\nesac\n\necho \"Completed for executable $FRAMEWORK_EXECUTABLE_PATH\"\necho $\n\ndone\n";
+			shellScript = "../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		221C2946AE10BC535A1931CF /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1885,7 +1876,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"$TARGET_BUILD_DIR/$INFOPLIST_PATH",
+				$TARGET_BUILD_DIR/$INFOPLIST_PATH,
 			);
 			name = "Upload source maps to Bugsnag";
 			outputFileListPaths = (
@@ -1971,7 +1962,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"$TARGET_BUILD_DIR/$INFOPLIST_PATH",
+				$TARGET_BUILD_DIR/$INFOPLIST_PATH,
 			);
 			name = "Upload source maps to Bugsnag";
 			outputFileListPaths = (
@@ -2553,7 +2544,9 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = S6UPZG7ZR3;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 736KUHUYZ3;
 				ENABLE_BITCODE = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				EXCLUDED_ARCHS = "";
@@ -2568,6 +2561,8 @@
 					"$(SRCROOT)/../node_modules/react-native-mmkv-storage/ios/**",
 				);
 				INFOPLIST_FILE = RocketChatRN/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "chatbegrünung";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2588,8 +2583,9 @@
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.reactnative;
-				PRODUCT_NAME = "Rocket.Chat Experimental";
+				PRODUCT_BUNDLE_IDENTIFIER = app.chatbegruenung;
+				PRODUCT_NAME = chatbegruenung;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match Development app.chatbegruenung";
 				SWIFT_OBJC_BRIDGING_HEADER = "RocketChatRN-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "RocketChatRN-Swift.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -2614,7 +2610,9 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = S6UPZG7ZR3;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 736KUHUYZ3;
 				ENABLE_BITCODE = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				EXCLUDED_ARCHS = "";
@@ -2629,6 +2627,8 @@
 					"$(SRCROOT)/../node_modules/react-native-mmkv-storage/ios/**",
 				);
 				INFOPLIST_FILE = RocketChatRN/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "chatbegrünung";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2649,9 +2649,10 @@
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
-				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.reactnative;
-				PRODUCT_NAME = "Rocket.Chat Experimental";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore chat.rocket.reactnative";
+				PRODUCT_BUNDLE_IDENTIFIER = app.chatbegruenung;
+				PRODUCT_NAME = chatbegruenung;
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore app.chatbegruenung";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore app.chatbegruenung";
 				SWIFT_OBJC_BRIDGING_HEADER = "RocketChatRN-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "RocketChatRN-Swift.h";
 				SWIFT_VERSION = 5.0;
@@ -2688,6 +2689,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = S6UPZG7ZR3;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 736KUHUYZ3;
 				ENABLE_BITCODE = NO;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
@@ -2705,7 +2707,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/rn-extensions-share/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
-					"$PODS_CONFIGURATION_BUILD_DIR/Firebase",
+					$PODS_CONFIGURATION_BUILD_DIR/Firebase,
 					"$(SRCROOT)/../node_modules/react-native-mmkv-storage/ios/**",
 				);
 				INFOPLIST_FILE = ShareRocketChatRN/Info.plist;
@@ -2728,8 +2730,9 @@
 					"-DFB_SONARKIT_ENABLED=1",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.reactnative.ShareExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = app.chatbegruenung.ShareExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match Development app.chatbegruenung.ShareExtension";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2765,6 +2768,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = S6UPZG7ZR3;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 736KUHUYZ3;
 				ENABLE_BITCODE = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				EXCLUDED_ARCHS = "";
@@ -2781,7 +2785,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/rn-extensions-share/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
-					"$PODS_CONFIGURATION_BUILD_DIR/Firebase",
+					$PODS_CONFIGURATION_BUILD_DIR/Firebase,
 					"$(SRCROOT)/../node_modules/react-native-mmkv-storage/ios/**",
 				);
 				INFOPLIST_FILE = ShareRocketChatRN/Info.plist;
@@ -2803,9 +2807,10 @@
 					"-DFB_SONARKIT_ENABLED=1",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
-				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.reactnative.ShareExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = app.chatbegruenung.ShareExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore chat.rocket.reactnative.ShareExtension";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore app.chatbegruenung.ShareExtension";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore app.chatbegruenung.ShareExtension";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2832,7 +2837,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_ASSET_PATHS = "\"RocketChat Watch App/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "RocketChat\\ Watch\\ App/Preview\\ Content";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=watchos*]" = S6UPZG7ZR3;
 				ENABLE_PREVIEWS = YES;
@@ -2841,7 +2846,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Rocket.Chat;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = chat.rocket.ios;
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = app.chatbegruenung;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2886,7 +2891,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_ASSET_PATHS = "\"RocketChat Watch App/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "RocketChat\\ Watch\\ App/Preview\\ Content";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=watchos*]" = S6UPZG7ZR3;
 				ENABLE_PREVIEWS = YES;
@@ -2895,7 +2900,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Rocket.Chat;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = chat.rocket.ios;
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = app.chatbegruenung;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2936,16 +2941,16 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_ASSET_PATHS = "\"RocketChat Watch App/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "RocketChat\\ Watch\\ App/Preview\\ Content";
 				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=watchos*]" = S6UPZG7ZR3;
+				"DEVELOPMENT_TEAM[sdk=watchos*]" = 736KUHUYZ3;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "Rocket.Chat Experimental";
+				INFOPLIST_KEY_CFBundleDisplayName = "chatbegrünung";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = chat.rocket.reactnative;
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = app.chatbegruenung;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2955,10 +2960,10 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.reactnative.watchkitapp;
-				PRODUCT_NAME = "Rocket.Chat Experimental Watch";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore chat.rocket.reactnative.watchkitapp";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=watchos*]" = "match AppStore chat.rocket.reactnative.watchkitapp";
+				PRODUCT_BUNDLE_IDENTIFIER = app.chatbegruenung.watchkitapp;
+				PRODUCT_NAME = "chatbegruenung Watch";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore app.chatbegruenung.watchkitapp";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=watchos*]" = "match AppStore app.chatbegruenung.watchkitapp";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
@@ -2989,16 +2994,16 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_ASSET_PATHS = "\"RocketChat Watch App/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "RocketChat\\ Watch\\ App/Preview\\ Content";
 				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=watchos*]" = S6UPZG7ZR3;
+				"DEVELOPMENT_TEAM[sdk=watchos*]" = 736KUHUYZ3;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "Rocket.Chat Experimental";
+				INFOPLIST_KEY_CFBundleDisplayName = "chatbegrünung";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = chat.rocket.reactnative;
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = app.chatbegruenung;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3007,10 +3012,10 @@
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
-				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.reactnative.watchkitapp;
-				PRODUCT_NAME = "Rocket.Chat Experimental Watch";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore chat.rocket.reactnative.watchkitapp";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=watchos*]" = "match AppStore chat.rocket.reactnative.watchkitapp";
+				PRODUCT_BUNDLE_IDENTIFIER = app.chatbegruenung.watchkitapp;
+				PRODUCT_NAME = "chatbegruenung Watch";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore app.chatbegruenung.watchkitapp";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=watchos*]" = "match AppStore app.chatbegruenung.watchkitapp";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -3035,7 +3040,9 @@
 				CODE_SIGN_ENTITLEMENTS = NotificationService/NotificationService.entitlements;
 				CODE_SIGN_STYLE = Manual;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = S6UPZG7ZR3;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 736KUHUYZ3;
 				ENABLE_BITCODE = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				EXCLUDED_ARCHS = "";
@@ -3051,8 +3058,9 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.reactnative.NotificationService;
+				PRODUCT_BUNDLE_IDENTIFIER = app.chatbegruenung.NotificationService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match Development app.chatbegruenung.NotificationService";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "NotificationService/NotificationService-Bridging-Header.h";
@@ -3079,7 +3087,9 @@
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = S6UPZG7ZR3;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 736KUHUYZ3;
 				ENABLE_BITCODE = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				EXCLUDED_ARCHS = "";
@@ -3094,9 +3104,10 @@
 				MARKETING_VERSION = 4.63.0;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
-				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.reactnative.NotificationService;
+				PRODUCT_BUNDLE_IDENTIFIER = app.chatbegruenung.NotificationService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore chat.rocket.reactnative.NotificationService";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore app.chatbegruenung.NotificationService";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore app.chatbegruenung.NotificationService";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "NotificationService/NotificationService-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -3118,6 +3129,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = S6UPZG7ZR3;
 				ENABLE_BITCODE = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
@@ -3179,6 +3191,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = S6UPZG7ZR3;
 				ENABLE_BITCODE = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
@@ -3288,10 +3301,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = "$(inherited)";
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
@@ -3331,6 +3341,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXCLUDED_ARCHS = "";
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -3355,10 +3366,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = "$(inherited)";
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
