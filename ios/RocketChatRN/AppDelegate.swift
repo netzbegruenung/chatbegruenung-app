@@ -2,7 +2,6 @@ import Expo
 import React
 import ReactAppDependencyProvider
 import Firebase
-import Bugsnag
 import MMKV
 import WatchConnectivity
 
@@ -19,8 +18,7 @@ public class AppDelegate: ExpoAppDelegate {
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
     FirebaseApp.configure()
-    Bugsnag.start()
-    
+
     if let appGroup = Bundle.main.object(forInfoDictionaryKey: "AppGroup") as? String,
        let groupDir = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup)?.path {
       MMKV.initialize(rootDir: nil, groupDir: groupDir, logLevel: .debug)
@@ -40,7 +38,7 @@ public class AppDelegate: ExpoAppDelegate {
 #if os(iOS) || os(tvOS)
     window = UIWindow(frame: UIScreen.main.bounds)
     factory.startReactNative(
-      withModuleName: "RocketChatRN",
+      withModuleName: "chatbegrünung",
       in: window,
       launchOptions: launchOptions)
 #endif
