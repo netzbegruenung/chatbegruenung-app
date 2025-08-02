@@ -1,6 +1,7 @@
 git_url("https://#{ENV['FASTLANE_REPO_PAT']}@github.com/RocketChat/Rocket.Chat.Cordova.Fastlane")
 
-type("development") # The default type, can be: appstore, adhoc, enterprise or development
+team_id "736KUHUYZ3"
+username "app@verdigado.com"
 
 # app_identifier(["tools.fastlane.app", "tools.fastlane.app2"])
 # username("user@fastlane.tools") # Your Apple Developer Portal username
