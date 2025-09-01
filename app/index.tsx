@@ -60,7 +60,7 @@ interface IState {
 
 const parseDeepLinking = (url: string) => {
 	if (url) {
-		url = url.replace(/rocketchat:\/\/|https:\/\/go.rocket.chat\//, '');
+		url = url.replace(/rocketchat:\/\/|https:\/\/chatbegruenung.de\//, '');
 		const regex = /^(room|auth|invite|shareextension)\?/;
 		const match = url.match(regex);
 		if (match) {
