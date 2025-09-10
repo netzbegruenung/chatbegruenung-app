@@ -49,9 +49,9 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="https" android:host="go.rocket.chat" android:path="/invite" />
-                <data android:scheme="https" android:host="go.rocket.chat" android:path="/auth" />
-                <data android:scheme="https" android:host="go.rocket.chat" android:path="/room" />
+                <data android:scheme="https" android:host="chatbegruenung.de" android:path="/invite" />
+                <data android:scheme="https" android:host="chatbegruenung.de" android:path="/auth" />
+                <data android:scheme="https" android:host="chatbegruenung.de" android:path="/room" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -87,6 +87,10 @@
         <meta-data
             android:name="com.bugsnag.android.API_KEY"
             android:value="${BugsnagAPIKey}" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_transparent" />
     </application>
 
     <queries>
