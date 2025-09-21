@@ -17,12 +17,12 @@ default_platform :ios
 
 platform :ios do
   before_all do
-    setup_ci	
-    create_keychain(	
-      name: ENV["MATCH_KEYCHAIN_NAME"],	
-      password: ENV["MATCH_KEYCHAIN_PASSWORD"],	
-      timeout: 1200	
-    )	
+    setup_ci
+    create_keychain(
+      name: ENV["MATCH_KEYCHAIN_NAME"],
+      password: ENV["MATCH_KEYCHAIN_PASSWORD"],
+      timeout: 1200
+    )
   end
 
   desc "Submit a new Beta Build to Apple TestFlight (Circle CI)"
@@ -34,8 +34,8 @@ platform :ios do
       in_house: false
     )
     pilot(
-      ipa: 'ios/Rocket.Chat.ipa',
-      app_identifier: options[:official] ? 'chat.rocket.ios' : 'chat.rocket.reactnative',
+      ipa: 'ios/chatbegruenung.ipa',
+      app_identifier: 'app.chatbegruenung',
       skip_waiting_for_build_processing: true
     )
   end
@@ -61,6 +61,38 @@ platform :ios do
     )
   end
 
+  desc "Deliver iOS App to Apple AppStore"
+  lane :production_upload do |options|
+    api_key = app_store_connect_api_key(
+      key_id: ENV["APP_STORE_CONNECT_API_KEY_ID"],
+      issuer_id: ENV["APP_STORE_CONNECT_API_KEY_ISSUER_ID"],
+      key_filepath: 'fastlane/app_store_connect_api_key.p8',
+      in_house: false
+    )
+
+    version_name = options[:version_name]
+    build_config_name = options[:build_config_name]
+    ipa_path = options[:ipa_path]
+
+    puts("delivering #{build_config_name} v#{version_name}")
+
+    # https://docs.fastlane.tools/actions/deliver/
+    deliver(
+      ipa: 'ios/chatbegruenung.ipa',
+      submit_for_review: true,
+      automatic_release: true,
+      force: true,
+      skip_screenshots: true,
+      skip_metadata: true,
+      release_notes: {'de-DE': "Wir haben die App weiter für dich verbessert und einige Fehler entfernt." },
+      # We do not have inapp purchase
+      precheck_include_in_app_purchases: false,
+      # https://firebase.google.com/docs/analytics/configure-data-collection?platform=ios
+      # https://support.google.com/firebase/answer/6318039?hl=en
+      submission_information: { add_id_info_uses_idfa: false }
+    )
+  end
+
   desc "Build Experimental app"
   lane :build_experimental do
     api_key = app_store_connect_api_key(
@@ -69,15 +101,17 @@ platform :ios do
       key_filepath: 'fastlane/app_store_connect_api_key.p8',
       in_house: false
     )
-    match(type: "appstore")
-    get_provisioning_profile(app_identifier: "chat.rocket.reactnative.ShareExtension")
-    get_provisioning_profile(app_identifier: "chat.rocket.reactnative.NotificationService")
-    get_provisioning_profile(app_identifier: "chat.rocket.reactnative.watchkitapp")
+    match(
+      type: "appstore",
+      app_identifier: ["app.chatbegruenung", "app.chatbegruenung.ShareExtension", "app.chatbegruenung.NotificationService", "app.chatbegruenung.watchkitapp"],
+      readonly: true,
+    )
     # pem(api_key: api_key) # still uses Spaceship http://docs.fastlane.tools/actions/pem/#how-does-it-work
     gym(
       scheme: "RocketChatRN",
       workspace: "RocketChatRN.xcworkspace",
-      output_name: "Rocket.Chat"
+      export_method: "app-store",
+      output_name: "chatbegruenung"
     )
   end
 
@@ -142,10 +176,10 @@ platform :ios do
   end
 
   after_all do |lane|
-    delete_keychain(name: ENV["MATCH_KEYCHAIN_NAME"])	
-  end	
+    delete_keychain(name: ENV["MATCH_KEYCHAIN_NAME"])
+  end
 
   error do |lane, exception|
-    delete_keychain(name: ENV["MATCH_KEYCHAIN_NAME"])	
+    delete_keychain(name: ENV["MATCH_KEYCHAIN_NAME"])
   end
 end
