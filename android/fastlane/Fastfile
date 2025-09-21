@@ -42,8 +42,8 @@ platform :android do
       )
     else
       upload_to_play_store(
-        package_name: 'chat.rocket.reactnative',
-        track: 'internal',
+        package_name: 'app.chatbegruenung',
+        track: 'beta',
         aab: 'android/app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab'
       )
     end
@@ -99,7 +99,7 @@ platform :android do
   desc "Upload App to Play Store Production (Circle CI)"
   lane :production_circle_ci do |options|
     upload_to_play_store(
-      package_name: 'chat.rocket.reactnative',
+      package_name: 'app.chatbegruenung',
       track: 'production',
       aab: 'android/app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab'
     )
