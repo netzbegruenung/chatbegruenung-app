@@ -100,3 +100,4 @@ AGENTS.md
 .direnv
 .envrc
 *.nix
+CLAUDE.md
