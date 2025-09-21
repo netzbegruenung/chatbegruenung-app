@@ -158,12 +158,14 @@ commands:
               echo -e "KEY_ALIAS=$KEYSTORE_OFFICIAL_ALIAS" >> ./gradle.properties
               echo -e "KEY_PASSWORD=$KEYSTORE_OFFICIAL_PASSWORD" >> ./gradle.properties
             else
-              echo -e "APPLICATION_ID=chat.rocket.reactnative" >> ./gradle.properties
-              echo $KEYSTORE_EXPERIMENTAL_BASE64 | base64 --decode > ./app/$KEYSTORE_EXPERIMENTAL
-              echo -e "KEYSTORE=$KEYSTORE_EXPERIMENTAL" >> ./gradle.properties
-              echo -e "KEYSTORE_PASSWORD=$KEYSTORE_EXPERIMENTAL_PASSWORD" >> ./gradle.properties
-              echo -e "KEY_ALIAS=$KEYSTORE_EXPERIMENTAL_ALIAS" >> ./gradle.properties
-              echo -e "KEY_PASSWORD=$KEYSTORE_EXPERIMENTAL_PASSWORD" >> ./gradle.properties
+              echo -e "APPLICATION_ID=app.chatbegruenung" >> ./gradle.properties
+              git clone $SIGNING_REPOSITORY_URL signing
+              cp signing/android/chatbegruenung-app.jks.gpg keystore.jks.gpg
+              gpg --verbose --passphrase $SIGNING_REPOSITORY_KEYSTORE_PASSWORD --pinentry-mode loopback -o app/keystore.jks -d keystore.jks.gpg
+              echo -e "KEYSTORE=keystore.jks" >> ./gradle.properties
+              echo -e "KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
+              echo -e "KEY_ALIAS=$KEYSTORE_KEY_ALIAS" >> ./gradle.properties
+              echo -e "KEY_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
             fi
           working_directory: android
 
@@ -183,6 +185,7 @@ commands:
             fi
             if [[ $CIRCLE_JOB == "android-build-experimental" || "android-automatic-build-experimental" ]]; then
               ./gradlew bundleExperimentalRelease
+              ./gradlew assembleExperimentalRelease
             fi
             if [[ ! $GOOGLE_SERVICES_ANDROID ]]; then
               ./gradlew assembleExperimentalDebug
@@ -254,9 +257,9 @@ commands:
       - save_cache: *save-npm-cache-mac
       - save_cache: *save-gems-cache
       - store_artifacts:
-          path: ios/Rocket.Chat.ipa
+          path: ios/chatbegruenung.ipa
       - store_artifacts:
-          path: ios/Rocket.Chat.app.dSYM.zip
+          path: ios/chatbegruenung.app.dSYM.zip
       - persist_to_workspace:
           root: .
           paths:
@@ -337,6 +340,26 @@ commands:
           command: |
             echo $APP_STORE_CONNECT_API_KEY_BASE64 | base64 --decode > ./fastlane/app_store_connect_api_key.p8
             bundle exec fastlane ios beta_circle_ci official:<< parameters.official >>
+          working_directory: ios
+      - save_cache: *save-gems-cache
+
+  upload-to-apple-appstore:
+    description: "Upload to Apple AppStore"
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ios
+      - restore_cache: *restore-gems-cache
+      - restore_cache: *restore-npm-cache-mac
+      - manage-ruby
+      - run: *install-npm-modules
+      - run: *update-fastlane-ios
+      - manage-pods
+      - run:
+          name: Fastlane Appstore Upload
+          command: |
+            echo $APP_STORE_CONNECT_API_KEY_BASE64 | base64 --decode > ./fastlane/app_store_connect_api_key.p8
+            bundle exec fastlane ios production_upload
           working_directory: ios
       - save_cache: *save-gems-cache
 
@@ -533,6 +556,11 @@ jobs:
     steps:
       - ios-build
 
+  ios-upload-to-apple-appstore:
+    executor: mac-env
+    steps:
+      - upload-to-apple-appstore
+
   ios-testflight-experimental:
     executor: mac-env
     steps:
@@ -598,99 +626,69 @@ jobs:
       - store_artifacts:
           path: artifacts
 
+  bump-version:
+    docker:
+      - image: cimg/node:20.17.0
+    resource_class: small
+    steps:
+      - checkout
+      - run:
+          name: Install Yarn Scripts
+          command: yarn --frozen-lockfile
+          working_directory: scripts
+      - run:
+          name: Bump git version
+          command: yarn app-toolbelt v0 release bump-to $(cat ../package.json | jq -r .version) $CIRCLE_BUILD_NUM --private-key ${GITHUB_PRIVATE_KEY} --github-app 1879442 --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME} --branch ${CIRCLE_BRANCH} --platforms all --tag-only
+          working_directory: scripts
+
+  notify-release:
+    docker:
+      - image: cimg/node:20.17.0
+    resource_class: small
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/attached_workspace
+      - run:
+          name: Install scripts
+          command: yarn --frozen-lockfile
+          working_directory: scripts
+      - run:
+          name: Create github release
+          command: echo "export RELEASE_ID='$(yarn --silent app-toolbelt v0 release create all $(cat ../package.json | jq -r .version) $CIRCLE_BUILD_NUM --release-notes "See https://github.com/RocketChat/Rocket.Chat.ReactNative/releases/tag/$(cat ../package.json | jq -r .version)" --private-key ${GITHUB_PRIVATE_KEY} --github-app 1879442 --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME} --production-release)'" >> ${BASH_ENV}
+          working_directory: scripts
+      - run:
+          name: Rename apk
+          command: mv ~/attached_workspace/app/build/outputs/apk/experimental/release/app-experimental-release.apk ~/chatbegruenung.apk
+      - run:
+          name: Upload apks to github release
+          command: yarn app-toolbelt v0 release upload --releaseId ${RELEASE_ID} --files "~/chatbegruenung.apk" --private-key ${GITHUB_PRIVATE_KEY} --github-app 1879442 --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME}
+          working_directory: scripts
+
 workflows:
-  build-and-test:
+  delivery:
     jobs:
-      - lint-testunit
+      - bump-version:
+          context:
+            - github
 
-      # E2E tests
-      - e2e-hold:
-          type: approval
-      - e2e-build-ios:
-          requires:
-            - e2e-hold
-      - e2e-test-ios:
-          requires:
-            - e2e-build-ios
-      - e2e-build-android:
-          requires:
-            - e2e-hold
-      - e2e-test-android:
-          requires:
-            - e2e-build-android
-
-      # iOS Experimental
-      - ios-hold-build-experimental:
-          type: approval
-          requires:
-              - lint-testunit
       - ios-build-experimental:
           requires:
-            - ios-hold-build-experimental
-      - ios-testflight-experimental:
+            - bump-version
+      - ios-upload-to-apple-appstore:
           requires:
             - ios-build-experimental
 
-      # iOS Official
-      - ios-hold-build-official:
-          type: approval
-          requires:
-            - lint-testunit
-      - ios-build-official:
-          requires:
-            - ios-hold-build-official
-      - ios-hold-testflight-official:
-          type: approval
-          requires:
-            - ios-build-official
-      - ios-testflight-official:
-          requires:
-            - ios-hold-testflight-official
-
-      # Android Experimental
-      - android-hold-build-experimental:
-          type: approval
-          requires:
-              - lint-testunit
-          filters:
-            branches:
-              ignore:
-                - develop
       - android-build-experimental:
           requires:
-            - android-hold-build-experimental
-      - android-internal-app-sharing-experimental:
-          requires:
-            - android-build-experimental
-      - android-hold-google-play-beta-experimental:
-          type: approval
-          requires:
-            - android-build-experimental
-      - android-google-play-beta-experimental:
-          requires:
-            - android-hold-google-play-beta-experimental
-      - android-hold-google-play-production-experimental:
-          type: approval
-          requires:
-            - android-build-experimental
+            - bump-version
       - android-google-play-production-experimental:
           requires:
-            - android-hold-google-play-production-experimental
+            - android-build-experimental
 
-      # Android Official
-      - android-hold-build-official:
-          type: approval
+      - notify-release:
+          context:
+            - github
           requires:
-            - lint-testunit
-      - android-build-official:
-          requires:
-            - android-hold-build-official
-      - android-hold-google-play-beta-official:
-          type: approval
-          requires:
-            - android-build-official
-      - android-google-play-beta-official:
-          requires:
-            - android-hold-google-play-beta-official
-
-
+            - android-google-play-production-experimental
+            - ios-upload-to-apple-appstore
