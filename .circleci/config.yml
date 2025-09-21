@@ -1,0 +1,317 @@
+version: 2.1
+
+orbs:
+  android: circleci/android@2.5.0
+
+executors:
+  mac-env:
+    macos:
+      xcode: 26.2.0
+
+commands:
+  install_ruby:
+    description: 'Install ruby'
+    steps:
+      - restore_cache:
+          name: Restore ruby
+          key: ruby-v2-{{ checksum ".ruby-version" }}
+      - run:
+          name: Install ruby
+          command: |
+            if [ -d ~/.rbenv/versions/2.7.7 ]; then
+              echo "Ruby already installed"
+            else
+              rbenv install 2.7.7
+            fi
+      - save_cache:
+          name: Save ruby cache
+          key: ruby-v2-{{ checksum ".ruby-version" }}
+          paths:
+            - ~/.rbenv/versions/2.7.7
+
+  install_gems:
+    description: 'Install Ruby gems'
+    parameters:
+      working_directory:
+        type: string
+    steps:
+      - restore_cache:
+          name: Restore gems cache
+          key: bundle-v1-{{ arch }}-{{ checksum "Gemfile.lock" }}
+      - run:
+          name: Install gems
+          command: |
+            bundle config set --local path 'vendor/bundle'
+            bundle install
+          working_directory: << parameters.working_directory >>
+      - save_cache:
+          name: Save gems cache
+          key: bundle-v1-{{ arch }}-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
+  install_node_modules:
+    description: 'Install node_modules'
+    steps:
+      - restore_cache:
+          name: Restore node_modules
+          key: pnpm-modules-{{ arch }}-{{ checksum "pnpm-lock.yaml" }}
+      - run:
+          name: Install node_modules
+          command: |
+            corepack enable --install-directory ~/bin
+            export PATH="$HOME/bin:$PATH"
+            pnpm install --frozen-lockfile
+      - save_cache:
+          name: Save node_modules
+          key: pnpm-modules-{{ arch }}-{{ checksum "pnpm-lock.yaml" }}
+          paths:
+            - ./node_modules
+
+  install_pods:
+    description: 'Install pods'
+    steps:
+      - restore_cache:
+          name: Restore pods
+          key: pods-v1-{{ checksum "ios/Podfile.lock" }}
+      - run:
+          name: Install pods
+          command: bundle exec pod install
+          working_directory: ios
+      - save_cache:
+          name: Save pods specs and pods cache
+          key: pods-v1-{{ checksum "ios/Podfile.lock" }}
+          paths:
+            - ~/.pods
+            - ios/Pods
+
+
+  fetch_supported_versions:
+    description: 'Fetch supported versions from Cloud'
+    steps:
+      - run:
+          name: Fetch supported versions from Cloud
+          command: sh ./scripts/fetch-supported-versions.sh
+      - store_artifacts:
+          path: ./app-supportedversions.json
+
+jobs:
+  build_android:
+    docker:
+      - image: cimg/android:2026.03.1-node
+    resource_class: xlarge
+    environment:
+      CMAKE_BUILD_PARALLEL_LEVEL: '1'
+      _JAVA_OPTIONS: '-XX:ActiveProcessorCount=2'
+    steps:
+      - checkout
+      - install_node_modules
+      - restore_cache:
+          name: Restore gradle cache
+          keys:
+            - gradle-v1-{{ checksum "android/build.gradle" }}-{{ checksum "android/app/build.gradle" }}-{{ checksum "android/gradle/wrapper/gradle-wrapper.properties" }}
+            - gradle-v1-
+      - fetch_supported_versions
+
+      - run:
+          name: Prepare Android Keystore
+          command: |
+            git clone $SIGNING_REPOSITORY_URL signing
+            cp signing/android/chatbegruenung-app.jks.gpg keystore.jks.gpg
+            gpg --verbose --passphrase $SIGNING_REPOSITORY_KEYSTORE_PASSWORD --pinentry-mode loopback -o app/keystore.jks -d keystore.jks.gpg
+          working_directory: android
+      - run:
+          name: Configure Gradle
+          command: |
+            echo "org.gradle.jvmargs=-Xmx6g -XX:MaxMetaspaceSize=512m -Dfile.encoding=UTF-8" > ./gradle.properties
+            echo "org.gradle.workers.max=1" >> ./gradle.properties
+            echo "org.gradle.parallel=false" >> ./gradle.properties
+            echo "android.useAndroidX=true" >> ./gradle.properties
+            echo "android.enableJetifier=true" >> ./gradle.properties
+            echo "android.jetifier.ignorelist=bcprov-jdk18on" >> ./gradle.properties
+            echo "reactNativeArchitectures=arm64-v8a" >> ./gradle.properties
+            echo "newArchEnabled=true" >> ./gradle.properties
+            echo "hermesEnabled=true" >> ./gradle.properties
+            echo "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
+            echo "APPLICATION_ID=app.chatbegruenung" >> ./gradle.properties
+            echo "KEYSTORE=keystore.jks" >> ./gradle.properties
+            echo "KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
+            echo "KEY_ALIAS=$KEYSTORE_KEY_ALIAS" >> ./gradle.properties
+            echo "KEY_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
+          working_directory: android
+
+      - run:
+          name: Set Google Services
+          command: echo $GOOGLE_SERVICES_ANDROID | base64 --decode > google-services.json
+          working_directory: android/app
+
+      - run:
+          name: Build aab
+          no_output_timeout: 30m
+          command: ./gradlew bundleRelease
+          working_directory: android
+
+      - run:
+          name: Build apk
+          no_output_timeout: 30m
+          command: ./gradlew assembleRelease
+          working_directory: android
+
+      - save_cache:
+          name: Save gradle cache
+          key: gradle-v1-{{ checksum "android/build.gradle" }}-{{ checksum "android/app/build.gradle" }}-{{ checksum "android/gradle/wrapper/gradle-wrapper.properties" }}
+          paths:
+            - ~/.gradle
+
+      - run:
+          name: Move artifacts
+          command: |
+            mv android/app/build/outputs/apk/release/app-release.apk ./chatbegruenung.apk
+            mv android/app/build/outputs/bundle/release/app-release.aab ./chatbegruenung.aab
+      - store_artifacts:
+          path: ./chatbegruenung.apk
+      - store_artifacts:
+          path: ./chatbegruenung.aab
+      - persist_to_workspace:
+          root: .
+          paths:
+            - chatbegruenung.apk
+            - chatbegruenung.aab
+
+  upload_android_beta:
+    docker:
+      - image: cimg/android:2026.03.1-node
+    steps:
+      - checkout
+      - attach_workspace:
+          at: android
+      - install_gems:
+          working_directory: android
+      - run:
+          name: Store the google service account key
+          command: echo "$FASTLANE_GOOGLE_SERVICE_ACCOUNT" | base64 --decode > service_account.json
+          working_directory: android
+      - run:
+          name: Fastlane Play Store Upload
+          command: bundle exec fastlane android open_testing
+          working_directory: android
+
+  build_ios:
+    executor: mac-env
+    steps:
+      - checkout
+      - install_ruby
+      - install_gems:
+          working_directory: ios
+      - install_node_modules
+      - install_pods
+      - fetch_supported_versions
+      - run:
+          name: Set Google Services
+          command: echo $GOOGLE_SERVICES_IOS_EXPERIMENTAL | base64 --decode > GoogleService-Info.plist
+          working_directory: ios
+      - run:
+          name: Fastlane Build
+          no_output_timeout: 40m
+          command: |
+            agvtool new-version -all $CIRCLE_BUILD_NUM
+            echo $APP_STORE_CONNECT_API_KEY_BASE64 | base64 --decode > ./fastlane/app_store_connect_api_key.p8
+            bundle exec fastlane ios build
+          working_directory: ios
+      - store_artifacts:
+          path: ios/chatbegruenung.ipa
+      - store_artifacts:
+          path: ios/chatbegruenung.app.dSYM.zip
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ios/*.ipa
+            - ios/*.zip
+
+  upload_ios_beta:
+    executor: mac-env
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ios
+      - install_ruby
+      - install_gems:
+          working_directory: ios
+      - install_node_modules
+      - install_pods
+      - run:
+          name: Fastlane TestFlight Upload
+          command: |
+            echo $APP_STORE_CONNECT_API_KEY_BASE64 | base64 --decode > ./fastlane/app_store_connect_api_key.p8
+            bundle exec fastlane ios beta
+          working_directory: ios
+
+  bump-version:
+    docker:
+      - image: cimg/node:22.21.1
+    resource_class: small
+    steps:
+      - checkout
+      - run:
+          name: Install scripts
+          command: |
+            corepack enable --install-directory ~/bin
+            pnpm install --frozen-lockfile
+          working_directory: scripts
+      - run:
+          name: Bump git version
+          command: npx --no app-toolbelt v0 release bump-to $(cat ../package.json | jq -r .version) --private-key ${GITHUB_PRIVATE_KEY} --github-app 1879442 --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME} --branch ${CIRCLE_BRANCH} --tag-only
+          working_directory: scripts
+
+  notify-release:
+    docker:
+      - image: cimg/node:22.21.1
+    resource_class: small
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/attached_workspace
+      - run:
+          name: Install scripts
+          command: |
+            corepack enable --install-directory ~/bin
+            pnpm install --frozen-lockfile
+          working_directory: scripts
+      - run:
+          name: Create github release
+          command: |
+            RELEASE=$(npx --no app-toolbelt v0 release create all $(cat ../package.json | jq -r .version) --release-notes "See https://github.com/RocketChat/Rocket.Chat.ReactNative/releases/tag/$(cat ../package.json | jq -r .version)" --private-key ${GITHUB_PRIVATE_KEY} --github-app 1879442 --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME} --production-release)
+            echo "export RELEASE_ID=$(echo ${RELEASE} | jq .id)" >> ${BASH_ENV}
+          working_directory: scripts
+      - run:
+          name: Upload apks to github release
+          command: npx --no app-toolbelt v0 release upload --releaseId ${RELEASE_ID} --files ~/attached_workspace/chatbegruenung.apk --private-key ${GITHUB_PRIVATE_KEY} --github-app 1879442 --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME}
+          working_directory: scripts
+
+workflows:
+  delivery:
+    jobs:
+      - bump-version:
+          context:
+            - github
+
+      - build_android:
+          requires:
+            - bump-version
+      - upload_android_beta:
+          requires:
+            - build_android
+
+      - build_ios:
+          requires:
+            - bump-version
+      - upload_ios_beta:
+          requires:
+            - build_ios
+
+      - notify-release:
+          context:
+            - github
+          requires:
+            - upload_android_beta
+            - upload_ios_beta
