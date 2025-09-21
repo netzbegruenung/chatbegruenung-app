@@ -104,4 +104,5 @@ AGENTS.md
 .direnv
 .envrc
 *.nix
+CLAUDE.md
 .nix-corepack/
