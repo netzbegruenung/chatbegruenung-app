@@ -88,3 +88,4 @@ e2e/e2e_account.ts
 .direnv
 .envrc
 *.nix
+CLAUDE.md

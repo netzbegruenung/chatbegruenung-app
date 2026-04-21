@@ -6,8 +6,7 @@ orbs:
 
 macos: &macos
   macos:
-    xcode: "16.2.0"
-  resource_class: macos.m1.medium.gen1
+    xcode: 26.2.0
 
 bash-env: &bash-env
   BASH_ENV: "~/.nvm/nvm.sh"
@@ -62,7 +61,8 @@ update-fastlane-ios: &update-fastlane-ios
 update-fastlane-android: &update-fastlane-android
   name: Update Fastlane
   command: |
-    bundle install --path gems
+    bundle config set --local path 'vendor/bundle'
+    bundle install
   working_directory: android
 
 save-gradle-cache: &save-gradle-cache
@@ -404,7 +404,7 @@ jobs:
   # Android builds
   android-build-experimental:
     <<: *defaults
-    resource_class: large
+    resource_class: xlarge
     docker:
       - image: cimg/android:2025.11.1-node
     environment:
@@ -677,14 +677,14 @@ workflows:
       - ios-build-experimental:
           requires:
             - bump-version
-      - ios-upload-to-apple-appstore:
+      - ios-testflight-experimental:
           requires:
             - ios-build-experimental
 
       - android-build-experimental:
           requires:
             - bump-version
-      - android-google-play-production-experimental:
+      - android-google-play-beta-experimental:
           requires:
             - android-build-experimental
 
@@ -692,5 +692,5 @@ workflows:
           context:
             - github
           requires:
-            - android-google-play-production-experimental
-            - ios-upload-to-apple-appstore
+            - android-google-play-beta-experimental
+            - ios-testflight-experimental
