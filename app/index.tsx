@@ -76,6 +76,9 @@ const parseDeepLinking = (url: string) => {
 				};
 			}
 		}
+		if (/^(invite|channel|direct|group)\//.test(url)) {
+			return { host: 'chatbegruenung.de', path: url };
+		}
 	}
 
 	// Return null if the URL doesn't match or is not valid
