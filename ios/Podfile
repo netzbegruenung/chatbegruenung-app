@@ -14,7 +14,6 @@ def all_pods
   pod 'simdjson', path: '../node_modules/@nozbe/simdjson', modular_headers: true
   pod 'MMKV', :modular_headers => true
   pod 'MMKVCore', :modular_headers => true
-  $RNFirebaseAnalyticsWithoutAdIdSupport = true
 
   use_expo_modules!
   config = use_native_modules!
