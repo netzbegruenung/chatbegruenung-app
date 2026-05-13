@@ -1,32 +1,20 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 import * as List from '../containers/List';
 import SafeAreaView from '../containers/SafeAreaView';
 import I18n from '../i18n';
-import { ANALYTICS_EVENTS_KEY, CRASH_REPORT_KEY } from '../lib/constants/keys';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 import useServer from '../lib/methods/useServer';
 import { type SettingsStackParamList } from '../stacks/types';
 import { handleLocalAuthentication } from '../lib/methods/helpers/localAuthentication';
-import {
-	events,
-	getReportAnalyticsEventsValue,
-	getReportCrashErrorsValue,
-	logEvent,
-	toggleAnalyticsEventsReport,
-	toggleCrashErrorsReport
-} from '../lib/methods/helpers/log';
-import Switch from '../containers/Switch';
+import { events, logEvent } from '../lib/methods/helpers/log';
 
 interface ISecurityPrivacyViewProps {
 	navigation: NativeStackNavigationProp<SettingsStackParamList, 'SecurityPrivacyView'>;
 }
 
 const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Element => {
-	const [crashReportState, setCrashReportState] = useState(getReportCrashErrorsValue());
-	const [analyticsEventsState, setAnalyticsEventsState] = useState(getReportAnalyticsEventsValue());
 	const [server] = useServer();
 
 	const e2eEnabled = useAppSelector(state => state.settings.E2E_Enable);
@@ -36,20 +24,6 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 			title: I18n.t('Security_and_privacy')
 		});
 	}, [navigation]);
-
-	const toggleCrashReport = (value: boolean) => {
-		logEvent(events.SP_TOGGLE_CRASH_REPORT);
-		AsyncStorage.setItem(CRASH_REPORT_KEY, JSON.stringify(value));
-		setCrashReportState(value);
-		toggleCrashErrorsReport(value);
-	};
-
-	const toggleAnalyticsEvents = (value: boolean) => {
-		logEvent(events.SP_TOGGLE_ANALYTICS_EVENTS);
-		AsyncStorage.setItem(ANALYTICS_EVENTS_KEY, JSON.stringify(value));
-		setAnalyticsEventsState(value);
-		toggleAnalyticsEventsReport(value);
-	};
 
 	const navigateToScreen = (screen: 'E2EEncryptionSecurityView' | 'ScreenLockConfigView') => {
 		// @ts-ignore
@@ -87,29 +61,6 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 						testID='security-privacy-view-screen-lock'
 					/>
 					<List.Separator />
-				</List.Section>
-
-				<List.Section>
-					<List.Separator />
-					<List.Item
-						title='Log_analytics_events'
-						testID='security-privacy-view-analytics-events'
-						right={() => <Switch value={analyticsEventsState} onValueChange={toggleAnalyticsEvents} />}
-						onPress={() => toggleAnalyticsEvents(!analyticsEventsState)}
-						additionalAccessibilityLabel={analyticsEventsState}
-						accessibilityRole='switch'
-					/>
-					<List.Separator />
-					<List.Item
-						title='Send_crash_report'
-						testID='security-privacy-view-crash-report'
-						right={() => <Switch value={crashReportState} onValueChange={toggleCrashReport} />}
-						onPress={() => toggleCrashReport(!crashReportState)}
-						additionalAccessibilityLabel={crashReportState}
-						accessibilityRole='switch'
-					/>
-					<List.Separator />
-					<List.Info info='Crash_report_disclaimer' />
 				</List.Section>
 			</List.Container>
 		</SafeAreaView>

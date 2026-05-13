@@ -11,7 +11,7 @@
 		"prettier-lint": "prettier --write . && pnpm lint",
 		"ios": "npx react-native run-ios",
 		"pod-install": "bundle exec pod install --project-directory=ios",
-		"android": "npx react-native run-android --main-activity chat.rocket.reactnative.MainActivity",
+		"android": "npx react-native run-android --main-activity chat.rocket.reactnative.MainActivity --appId app.chatbegruenung --active-arch-only",
 		"android-whitelabel": "npx react-native run-android --main-activity chat.rocket.reactnative.MainActivity --appId",
 		"log-android": "react-native log-android",
 		"snyk-protect": "snyk protect",
@@ -20,11 +20,9 @@
 		"organize-translations": "node scripts/organize-translations.js",
 		"e2e:start": "RUNNING_E2E_TESTS=true npx react-native start",
 		"storybook:start": "USE_STORYBOOK=true npx react-native start --reset-cache",
-		"storybook-generate": "sb-rn-get-stories",
-		"bugsnag:upload-android": "bugsnag-cli upload react-native-android"
+		"storybook-generate": "sb-rn-get-stories"
 	},
 	"dependencies": {
-		"@bugsnag/react-native": "8.4.0",
 		"@expo/vector-icons": "^15.0.3",
 		"@hookform/resolvers": "^2.9.10",
 		"@lodev09/react-native-true-sheet": "~3.7.0",
@@ -37,9 +35,7 @@
 		"@react-native-community/netinfo": "^11.3.1",
 		"@react-native-community/slider": "5.0.1",
 		"@react-native-cookies/cookies": "6.2.1",
-		"@react-native-firebase/analytics": "^21.12.2",
 		"@react-native-firebase/app": "^21.12.2",
-		"@react-native-firebase/crashlytics": "^21.12.2",
 		"@react-native-masked-view/masked-view": "^0.3.1",
 		"@react-native-picker/picker": "2.11.4",
 		"@react-native/codegen": "^0.80.0",
@@ -149,7 +145,6 @@
 			"jpeg-js": "0.4.4"
 		},
 		"onlyBuiltDependencies": [
-			"@bugsnag/cli",
 			"@rocket.chat/mobile-crypto",
 			"core-js-pure",
 			"esbuild",
@@ -166,8 +161,6 @@
 		"@babel/plugin-transform-named-capturing-groups-regex": "~7.25.9",
 		"@babel/preset-env": "~7.25.9",
 		"@babel/runtime": "~7.25.9",
-		"@bugsnag/cli": "^3.2.1",
-		"@bugsnag/source-maps": "^2.3.3",
 		"@gorhom/bottom-sheet": "^5",
 		"@react-native-community/cli": "20.0.0",
 		"@react-native-community/cli-platform-android": "20.0.0",

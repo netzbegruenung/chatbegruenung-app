@@ -35,7 +35,7 @@ public final class VoipService: NSObject {
     private static let voipTokenStorageKey = "RCVoipPushToken"
     private static let storage = MMKVBridge.build()
     /// Serializes access to `lastVoipToken` and `initialEventsData` (main-thread writers vs RN bridge readers).
-    private static let bridgeStateQueue = DispatchQueue(label: "chat.rocket.ios.voipService.bridgeState")
+    private static let bridgeStateQueue = DispatchQueue(label: "app.chatbegruenung.voipService.bridgeState")
     /// Serializes access to `nativeAcceptHandledCallIds` (CXCallObserver callbacks on main vs
     /// `handleNativeAccept` on main via CallKit, plus `clearNativeAcceptDedupe` from various contexts).
     private static let nativeAcceptLock = NSLock()

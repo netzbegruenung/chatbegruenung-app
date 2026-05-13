@@ -24,6 +24,7 @@ import { getUserSelector } from '../selectors/login';
 import { type TNavigation } from '../stacks/stackType';
 import { useTheme } from '../theme';
 import { LOCAL_DOCUMENT_DIRECTORY, getFilename } from '../lib/methods/handleMediaDownload';
+import appConfig from '../../app.json';
 
 const RenderContent = ({
 	setLoading,
@@ -160,7 +161,7 @@ const AttachmentView = (): React.ReactElement => {
 		setLoading(true);
 		try {
 			if (LOCAL_DOCUMENT_DIRECTORY && url.startsWith(LOCAL_DOCUMENT_DIRECTORY)) {
-				await CameraRoll.save(url, { album: 'Rocket.Chat' });
+				await CameraRoll.save(url, { album: appConfig.name });
 			} else {
 				const mediaAttachment = formatAttachmentUrl(url, user.id, user.token, baseUrl);
 				let filename = '';
@@ -170,7 +171,7 @@ const AttachmentView = (): React.ReactElement => {
 					filename = getFilename({ title: attachment.title, type: 'video', mimeType: video_type, url });
 				}
 				const file = await fileDownload(mediaAttachment, {}, filename);
-				await CameraRoll.save(file, { album: 'Rocket.Chat' });
+				await CameraRoll.save(file, { album: appConfig.name });
 				FileSystem.deleteAsync(file, { idempotent: true });
 			}
 			EventEmitter.emit(LISTENER, { message: I18n.t('saved_to_gallery') });

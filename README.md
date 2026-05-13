@@ -1,4 +1,4 @@
-# Rocket.Chat Mobile
+# chatbegrünung
 
 - **Supported server versions:** 0.70.0+
 - **Supported iOS versions**: 13.4+
@@ -6,10 +6,10 @@
 
 ## Download
 
-<a href="https://play.google.com/store/apps/details?id=chat.rocket.android">
+<a href="https://play.google.com/store/apps/details?id=app.chatbegruenung">
   <img alt="Download on Google Play" src="https://play.google.com/intl/en_us/badges/images/badge_new.png" height=43>
 </a>
-<a href="https://apps.apple.com/us/app/rocket-chat/id1148741252">
+<a href="https://apps.apple.com/de/app/chatbegr%C3%BCnung/id6743933604">
   <img alt="Download on App Store" src="https://user-images.githubusercontent.com/7317008/43209852-4ca39622-904b-11e8-8ce1-cdc3aee76ae9.png" height=43>
 </a>
 
@@ -17,13 +17,13 @@ Check [our docs](https://developer.rocket.chat/docs/mobile-app) for beta version
 
 ## Reporting an Issue
 
-[Github Issues](https://github.com/RocketChat/Rocket.Chat.ReactNative/issues) are used to track todos, bugs, feature requests, and more.
+[Github Issues](https://github.com/netzbegruenung/chatbegruenung-app/issues) are used to track todos, bugs, feature requests, and more.
 
 Also check the [#react-native](https://open.rocket.chat/channel/react-native) community on [open.rocket.chat](https://open.rocket.chat). We'd like to help.
 
 ## Contributing
 
-Are you a dev and would like to help? Found a bug that you would like to report or a missing feature that you would like to work on? Great! We have written down a [Contribution guide](https://github.com/RocketChat/Rocket.Chat.ReactNative/blob/develop/CONTRIBUTING.md) so you can start easily.
+Are you a dev and would like to help? Found a bug that you would like to report or a missing feature that you would like to work on? Great! We have written down a [Contribution guide](https://github.com/netzbegruenung/chatbegruenung-app/blob/single-server/CONTRIBUTING.md) so you can start easily.
 
 ## Whitelabel
 Do you want to make the app run on your own server only? [Follow our whitelabel documentation.](https://developer.rocket.chat/mobile-app-white-labelling)

@@ -95,3 +95,8 @@ AGENTS.md
 /docs/
 .superset/
 .jest-cache/
+
+
+.direnv
+.envrc
+*.nix

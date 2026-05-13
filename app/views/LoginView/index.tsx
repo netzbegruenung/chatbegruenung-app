@@ -7,6 +7,7 @@ import FormContainer, { FormContainerInner } from '../../containers/FormContaine
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import LoginServices from '../../containers/LoginServices';
 import { type OutsideParamList } from '../../stacks/types';
+import appConfig from '../../../app.json';
 import UserForm from './UserForm';
 
 const LoginView = () => {
@@ -22,7 +23,7 @@ const LoginView = () => {
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
-			title: title ?? 'Rocket.Chat',
+			title: title ?? appConfig.name,
 			headerRight: () => <HeaderButton.Legal testID='login-view-more' navigation={navigation} />
 		});
 	}, [navigation, title]);

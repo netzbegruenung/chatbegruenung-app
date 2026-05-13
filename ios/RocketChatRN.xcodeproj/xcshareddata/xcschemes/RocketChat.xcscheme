@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "7AAB3E0D257E6A6E00707CF6"
-               BuildableName = "Rocket.Chat.app"
+               BuildableName = "chatbegruenung.app"
                BlueprintName = "Rocket.Chat"
                ReferencedContainer = "container:RocketChatRN.xcodeproj">
             </BuildableReference>
@@ -45,7 +45,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "7AAB3E0D257E6A6E00707CF6"
-            BuildableName = "Rocket.Chat.app"
+            BuildableName = "chatbegruenung.app"
             BlueprintName = "Rocket.Chat"
             ReferencedContainer = "container:RocketChatRN.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "7AAB3E0D257E6A6E00707CF6"
-            BuildableName = "Rocket.Chat.app"
+            BuildableName = "chatbegruenung.app"
             BlueprintName = "Rocket.Chat"
             ReferencedContainer = "container:RocketChatRN.xcodeproj">
          </BuildableReference>
