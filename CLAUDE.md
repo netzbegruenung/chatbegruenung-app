@@ -4,19 +4,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Rocket.Chat React Native mobile client. Single-package React Native app (not a monorepo) using pnpm (version pinned in `package.json#packageManager`, activated via corepack). Supports iOS 13.4+ and Android 6.0+.
+This is a **whitelabeled fork** of Rocket.Chat React Native (upstream: `RocketChat/Rocket.Chat.ReactNative`) branded as **Chatbegrünung** for netzbegruenung. App ID: `app.chatbegruenung`. Deep links use `https://chatbegruenung.de/` and `rocketchat://` schemes. Bugsnag, Firebase Analytics, and Crashlytics have been removed. Login goes directly to SAML.
+
+Single-package React Native app (not a monorepo) using **pnpm 10.33.4** (see `packageManager` in `package.json`; a `pnpm-lock.yaml` is the only lockfile). Supports iOS 13.4+ and Android 6.0+.
 
 - React 19.1, React Native 0.81, Expo 54
-- TypeScript with strict mode, baseUrl set to `app/` (imports resolve from there)
+- TypeScript with strict mode + `noUnusedLocals` + `noUnusedParameters`; baseUrl set to `app/` (imports resolve from there)
 - Node: engines `>=18`, volta pins 24.13.1
 - Read UBIQUITOUS_LANGUAGE.md
 
 ## Commands
 
 ```bash
-# First-time setup (per machine)
-corepack enable            # Activates the pnpm version pinned in package.json
-
 # Install & setup
 pnpm install               # Install dependencies (postinstall runs patch-package)
 pnpm pod-install           # Install iOS CocoaPods (required before iOS builds)
@@ -24,19 +23,23 @@ pnpm pod-install           # Install iOS CocoaPods (required before iOS builds)
 # Run
 pnpm start                 # Start Metro bundler
 pnpm ios                   # Build and run on iOS
-pnpm android               # Build and run on Android
+pnpm android               # Build and run on Android (--appId app.chatbegruenung --active-arch-only)
+pnpm android-whitelabel <appId>  # Same, but for a different appId
 
 # Test
-TZ=UTC pnpm test           # Run Jest unit tests (TZ=UTC is set in script)
+pnpm test                  # Run Jest unit tests (script sets TZ=UTC)
 pnpm test --testPathPattern='path/to/test'  # Run a single test file
 pnpm test-update           # Update snapshots
 
+# E2E (Maestro)
+pnpm e2e:start             # Start Metro for E2E tests (sets RUNNING_E2E_TESTS, enabling .mock.ts overrides)
+
 # Lint & format
-pnpm lint                  # ESLint + TypeScript compiler check
-pnpm prettier-lint         # Prettier auto-fix + lint
+pnpm lint                  # ESLint + TypeScript compiler check (`eslint . && tsc`)
+pnpm prettier-lint         # Prettier auto-fix, then lint
 
 # Storybook
-pnpm storybook:start       # Start Metro with Storybook UI
+pnpm storybook:start       # Start Metro with Storybook UI (USE_STORYBOOK=true, resets cache)
 pnpm storybook-generate    # Generate story snapshots
 ```
 
@@ -44,7 +47,7 @@ pnpm storybook-generate    # Generate story snapshots
 
 - **Prettier**: tabs, single quotes, 130 char width, no trailing commas, arrow parens avoid, bracket same line
 - **ESLint**: `@rocket.chat/eslint-config` base with React, React Native, TypeScript, Jest plugins
-- **Before committing**: Run `pnpm prettier-lint` and `TZ=UTC pnpm test` for modified files
+- **Before committing**: Run `pnpm prettier-lint` and `pnpm test` for modified files
 - Pre-commit hooks enforce these checks
 
 ## Architecture
@@ -92,6 +95,11 @@ pnpm storybook-generate    # Generate story snapshots
 
 ### Entry Points
 
-- `index.js` — registers app, conditionally loads Storybook
-- `app/index.tsx` — Redux provider, theme, navigation, notifications setup
+- `index.js` — registers app, conditionally loads Storybook (via `USE_STORYBOOK=true` env var)
+- `app/index.tsx` — Redux provider, theme, navigation, notifications setup; strips `rocketchat://` and `https://chatbegruenung.de/` deep link prefixes
 - `app/AppContainer.tsx` — root navigation container
+
+### Native Modules
+
+- `app/lib/native/` — native module bindings with Codegen specs (declared under `codegenConfig` in package.json)
+- `patches/` — patch-package patches applied during `postinstall`; add new patches here when upstream packages need modification
