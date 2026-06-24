@@ -7,6 +7,7 @@ import { shallowEqual } from 'react-redux';
 
 import { type OutsideModalParamList, type OutsideParamList } from '../../stacks/types';
 import I18n from '../../i18n';
+import ActivityIndicator from '../../containers/ActivityIndicator';
 import Button from '../../containers/Button';
 import { useWorkspaceDomain } from '../../lib/hooks/useWorkspaceDomain';
 import { useTheme } from '../../theme';
@@ -29,7 +30,10 @@ const useWorkspaceViewSelector = () =>
 		Assets_favicon_512: state.settings.Assets_favicon_512 as IAssetsFavicon512,
 		registrationForm: state.settings.Accounts_RegistrationForm as string,
 		Accounts_iframe_enabled: state.settings.Accounts_iframe_enabled as boolean,
-		inviteLinkToken: state.inviteLinks.token
+		inviteLinkToken: state.inviteLinks.token,
+		// After SAML succeeds the webview pops back to WorkspaceView before `handleLoginSuccess` flips root to INSIDE.
+		// `isFetching` covers the LOGIN.REQUEST → LOGIN.SUCCESS window; `isAuthenticated` covers the gap until root flips.
+		isLoggingIn: state.login.isFetching || state.login.isAuthenticated
 	}));
 
 const WorkspaceView = () => {
@@ -41,7 +45,8 @@ const WorkspaceView = () => {
 
 	const services = useAppSelector(state => state.login.services as IServices, shallowEqual);
 
-	const { Accounts_iframe_enabled, Assets_favicon_512, inviteLinkToken, registrationForm } = useWorkspaceViewSelector();
+	const { Accounts_iframe_enabled, Assets_favicon_512, inviteLinkToken, isLoggingIn, registrationForm } =
+		useWorkspaceViewSelector();
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -71,20 +76,24 @@ const WorkspaceView = () => {
 
 	return (
 		<FormContainer testID='workspace-view'>
-			<FormContainerInner>
-				<View style={styles.alignItemsCenter}>
-					<ServerAvatar url={appConfig.server} image={Assets_favicon_512?.url ?? Assets_favicon_512?.defaultUrl} />
-					{/* Display the app name instead of the server name */}
-					<Text style={[styles.serverName, { color: colors.fontTitlesLabels }]}>{appConfig.name}</Text>
-					{/* Use the hardcoded server URL so it renders before settings load */}
-					<Text style={[styles.serverUrl, { color: colors.fontSecondaryInfo }]}>{appConfig.server}</Text>
-				</View>
-				<Button title={I18n.t('Login')} type='primary' onPress={login} loading={!loginService} testID='workspace-view-login' />
-				{/* Hide login via GrünesNetz hint as we directly open the login  */}
-				{showRegistrationButton ? (
-					<Button title={I18n.t('Create_account')} type='secondary' onPress={register} testID='workspace-view-register' />
-				) : null}
-			</FormContainerInner>
+			{isLoggingIn ? (
+				<ActivityIndicator size='large' />
+			) : (
+				<FormContainerInner>
+					<View style={styles.alignItemsCenter}>
+						<ServerAvatar url={appConfig.server} image={Assets_favicon_512?.url ?? Assets_favicon_512?.defaultUrl} />
+						{/* Display the app name instead of the server name */}
+						<Text style={[styles.serverName, { color: colors.fontTitlesLabels }]}>{appConfig.name}</Text>
+						{/* Use the hardcoded server URL so it renders before settings load */}
+						<Text style={[styles.serverUrl, { color: colors.fontSecondaryInfo }]}>{appConfig.server}</Text>
+					</View>
+					<Button title={I18n.t('Login')} type='primary' onPress={login} loading={!loginService} testID='workspace-view-login' />
+					{/* Hide login via GrünesNetz hint as we directly open the login  */}
+					{showRegistrationButton ? (
+						<Button title={I18n.t('Create_account')} type='secondary' onPress={register} testID='workspace-view-register' />
+					) : null}
+				</FormContainerInner>
+			)}
 		</FormContainer>
 	);
 };
