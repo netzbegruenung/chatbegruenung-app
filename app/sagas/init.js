@@ -15,6 +15,7 @@ import { RootEnum } from '../definitions';
 import { getSortPreferences } from '../lib/methods/userPreferencesMethods';
 import { deepLinkingClickCallPush } from '../actions/deepLinking';
 import { getServerById } from '../lib/database/services/Server';
+import { getLoggedUserById } from '../lib/database/services/LoggedUser';
 
 import appConfig from '../../app.json';
 
@@ -47,10 +48,17 @@ const restore = function* restore() {
 		// 	}
 		const { server } = appConfig;
 		const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
+		// A token in MMKV without a matching user record in WatermelonDB strands the app in
+		// handleSelectServer's no-user branch, which mounts WorkspaceView without ever fetching
+		// login services. Treat that as fresh-launch state instead of trusting the stale token.
+		const userRecord = userId ? yield call(getLoggedUserById, userId) : null;
 
-		if (!userId) {
+		if (!userId || !userRecord) {
 			UserPreferences.removeItem(TOKEN_KEY);
 			UserPreferences.removeItem(CURRENT_SERVER);
+			if (userId) {
+				UserPreferences.removeItem(`${TOKEN_KEY}-${server}`);
+			}
 			yield put(serverRequest(appConfig.server));
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		} else {
