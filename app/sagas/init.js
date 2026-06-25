@@ -2,7 +2,7 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 import RNBootSplash from 'react-native-bootsplash';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
+import { CURRENT_SERVER, TOKEN_KEY, getServerUserIdKey } from '../lib/constants/keys';
 import UserPreferences from '../lib/methods/userPreferences';
 import { migrateTokenKeysToServerScoped } from '../lib/methods/migrateTokenKeysToServerScoped';
 import { isLoggedInServer } from '../lib/methods/loggedInServer';
@@ -17,6 +17,7 @@ import { RootEnum } from '../definitions';
 import { getSortPreferences } from '../lib/methods/userPreferencesMethods';
 import { deepLinkingClickCallPush } from '../actions/deepLinking';
 import { getServerById } from '../lib/database/services/Server';
+import { getLoggedUserById } from '../lib/database/services/LoggedUser';
 
 // eslint-disable-next-line no-restricted-imports
 import appConfig from '../../app.json';
@@ -30,7 +31,21 @@ export const initLocalSettings = function* initLocalSettings() {
 
 const restoreServer = async () => {
 	const { server } = appConfig;
-	const restoredServer = isLoggedInServer(server) ? await getServerById(server) : null;
+	if (!isLoggedInServer(server)) {
+		return null;
+	}
+
+	// A token in MMKV without a matching user record in WatermelonDB strands the app in
+	// handleSelectServer's no-user branch, which mounts WorkspaceView without ever fetching
+	// login services. Treat that as fresh-launch state instead of trusting the stale token.
+	const userId = UserPreferences.getString(getServerUserIdKey(server));
+	const userRecord = userId ? await getLoggedUserById(userId) : null;
+	if (!userRecord) {
+		UserPreferences.removeItem(getServerUserIdKey(server));
+		return null;
+	}
+
+	const restoredServer = await getServerById(server);
 
 	if (restoredServer) {
 		try {
