@@ -3,18 +3,13 @@
 <plist version="1.0">
 <dict>
 	<key>AppGroupIdentifier</key>
-	<string>group.ios.chat.rocket</string>
-	<key>bugsnag</key>
-	<dict>
-		<key>apiKey</key>
-		<string>apiKeyValue</string>
-	</dict>
+	<string>group.app.chatbegruenung</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>$(PRODUCT_NAME)</string>
+	<string>chatbegrünung</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -22,7 +17,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>$(PRODUCT_NAME)</string>
+	<string>chatbegrünung</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -47,7 +42,7 @@
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>KeychainGroup</key>
-	<string>$(AppIdentifierPrefix)chat.rocket.reactnative</string>
+	<string>$(AppIdentifierPrefix)app.chatbegruenung</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>googlechrome</string>
@@ -70,9 +65,9 @@
 	<key>NSFaceIDUsageDescription</key>
 	<string>Unlock the app with FaceID</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>$(PRODUCT_NAME) uses your microphone to make voice calls and record audio messages</string>
+	<string>chatbegrünung uses your microphone to make voice calls and record audio messages</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Give $(PRODUCT_NAME) permission to save photos</string>
+	<string>Give chatbegrünung permission to save photos</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Upload photos to share with other users or to change your avatar</string>
 	<key>RCTNewArchEnabled</key>

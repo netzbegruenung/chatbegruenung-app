@@ -15,6 +15,7 @@ import { type OutsideParamList } from '../stacks/types';
 import { useTheme } from '../theme';
 import { showErrorAlert } from '../lib/methods/helpers';
 import { events, logEvent } from '../lib/methods/helpers/log';
+import appConfig from '../../app.json';
 import sharedStyles from './Styles';
 
 const schema = yup.object().shape({
@@ -42,7 +43,7 @@ const ForgotPasswordView = ({ route }: ForgotPasswordViewProps): ReactElement =>
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
-			title: params?.title ?? 'Rocket.Chat'
+			title: params?.title ?? appConfig.name
 		});
 	}, [navigation, params?.title]);
 

@@ -96,3 +96,9 @@ AGENTS.md
 .superset/
 .jest-cache/
 .sniffler/cache.json
+
+
+.direnv
+.envrc
+*.nix
+.nix-corepack/

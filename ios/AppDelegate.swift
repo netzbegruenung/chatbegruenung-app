@@ -2,7 +2,6 @@ import Expo
 import React
 import ReactAppDependencyProvider
 import Firebase
-import Bugsnag
 import WatchConnectivity
 import PushKit
 
@@ -24,12 +23,11 @@ public class AppDelegate: ExpoAppDelegate {
     MMKVKeyManager.initialize()
     
     FirebaseApp.configure()
-    Bugsnag.start()
     ReplyNotification.configure()
     if !VoipRegion.isChina() {
       VoipService.voipRegistration()
       RNCallKeep.setup([
-        "appName": "Rocket.Chat",
+        "appName": "chatbegrünung",
         "supportsVideo": false,
         "maximumCallGroups": 1,
         "maximumCallsPerCallGroup": 1,
@@ -48,7 +46,7 @@ public class AppDelegate: ExpoAppDelegate {
 #if os(iOS) || os(tvOS)
     window = UIWindow(frame: UIScreen.main.bounds)
     factory.startReactNative(
-      withModuleName: "RocketChatRN",
+      withModuleName: "chatbegrünung",
       in: window,
       launchOptions: launchOptions)
 #endif
