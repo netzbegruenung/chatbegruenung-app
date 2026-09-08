@@ -21,8 +21,8 @@ corepack enable
 
 Clone repository and install dependencies:
 ```sh
-git clone git@github.com:RocketChat/Rocket.Chat.ReactNative.git
-cd Rocket.Chat.ReactNative
+git clone git@github.com:netzbegruenung/chatbegruenung-app.git
+cd chatbegruenung-app
 pnpm install
 ```
 

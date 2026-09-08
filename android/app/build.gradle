@@ -2,8 +2,6 @@ apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 
-apply plugin: 'com.google.firebase.crashlytics'
-
 /**
  * This is the configuration block to customize your React Native Android app.
  * By default you don't need to apply any configuration, just uncomment the lines you need.
@@ -87,7 +85,7 @@ android {
         versionCode VERSIONCODE as Integer
         versionName "4.78.1"
         vectorDrawables.useSupportLibrary = true
-        manifestPlaceholders = [BugsnagAPIKey: BugsnagAPIKey as String]
+        resValue "string", "rn_config_reader_custom_package", "chat.rocket.reactnative"
     }
 
     packaging {
@@ -115,9 +113,6 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
-            firebaseCrashlytics {
-                nativeSymbolUploadEnabled true
-            }
         }
     }
 }

@@ -100,3 +100,8 @@ AGENTS.md
 # e2e
 .e2e/*
 !.e2e/cache/
+
+.direnv
+.envrc
+*.nix
+.nix-corepack/

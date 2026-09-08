@@ -2,7 +2,6 @@ public import Expo
 import React
 import ReactAppDependencyProvider
 import Firebase
-import Bugsnag
 import WatchConnectivity
 import PushKit
 import SQLite3
@@ -27,13 +26,12 @@ public class AppDelegate: ExpoAppDelegate {
     MMKVKeyManager.initialize()
     
     FirebaseApp.configure()
-    Bugsnag.start()
     migrateLegacyExperimentalDatabases()
     ReplyNotification.configure()
     if !VoipRegion.isChina() {
       VoipService.voipRegistration()
       RNCallKeep.setup([
-        "appName": "Rocket.Chat",
+        "appName": "chatbegrünung",
         "supportsVideo": false,
         "maximumCallGroups": 1,
         "maximumCallsPerCallGroup": 1,
@@ -184,7 +182,7 @@ public class AppDelegate: ExpoAppDelegate {
 
 extension AppDelegate: ExpoReactNativeFactoryProvider {
   public var reactNativeFactoryModuleName: String {
-    "RocketChatRN"
+    "chatbegrünung"
   }
 }
 
