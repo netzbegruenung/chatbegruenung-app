@@ -9,6 +9,7 @@ import { showErrorAlert, isValidEmail } from '../lib/methods/helpers';
 import I18n from '../i18n';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
+import appConfig from '../../app.json';
 import sharedStyles from './Styles';
 import { sendConfirmationEmail } from '../lib/services/restApi';
 
@@ -49,7 +50,7 @@ const SendEmailConfirmationView = ({ route }: SendEmailConfirmationViewProps) =>
 
 	useEffect(() => {
 		navigation.setOptions({
-			title: 'Rocket.Chat'
+			title: appConfig.name
 		});
 		if (route.params?.user) {
 			validate(route.params.user);
