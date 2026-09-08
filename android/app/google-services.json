@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "108534612669",
+    "project_id": "chatbegruenung-30f1e",
+    "storage_bucket": "chatbegruenung-30f1e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:108534612669:android:969978f128075f491b2dd4",
+        "android_client_info": {
+          "package_name": "app.chatbegruenung"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBY8d-ImSq3ZYM1cF1Fyup9dsRIwViZwDY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -65,7 +65,7 @@ extension AppDelegate: PKPushRegistryDelegate {
       #if DEBUG
       print("[\(voipAppDelegateLogTag)] Failed to parse incoming VoIP payload: \(payloadDict)")
       #endif
-      reportPlaceholderCallAndEnd(UUID().uuidString, "Rocket.Chat")
+      reportPlaceholderCallAndEnd(UUID().uuidString, "chatbegrünung")
       return
     }
 

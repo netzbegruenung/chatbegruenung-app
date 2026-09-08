@@ -1,5 +1,5 @@
 {
-	"Simulator Target Bundle": "chat.rocket.ios",
+	"Simulator Target Bundle": "app.chatbegruenung",
 	"aps": {
 		"alert": {
 			"title": "Hey!",
