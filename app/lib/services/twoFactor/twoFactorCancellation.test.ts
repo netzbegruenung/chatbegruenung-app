@@ -1,5 +1,4 @@
 import { Alert } from 'react-native';
-import bugsnag from '@bugsnag/react-native';
 
 import log from '~/lib/methods/helpers/log';
 import { showErrorAlertWithEMessage } from '~/lib/methods/helpers/info';
@@ -19,7 +18,6 @@ describe('two-factor cancellation', () => {
 		jest.clearAllMocks();
 		jest.spyOn(Alert, 'alert').mockImplementation(() => {});
 		jest.spyOn(console, 'error').mockImplementation(() => {});
-		jest.spyOn(bugsnag, 'notify').mockImplementation(() => {});
 	});
 
 	afterEach(() => {
@@ -28,7 +26,6 @@ describe('two-factor cancellation', () => {
 
 	it('does not report a cancellation to crash logging or the console', () => {
 		log(cancelled);
-		expect(bugsnag.notify).not.toHaveBeenCalled();
 		expect(console.error).not.toHaveBeenCalled();
 	});
 

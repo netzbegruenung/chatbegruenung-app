@@ -22,7 +22,6 @@ import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 import com.facebook.react.defaults.DefaultReactNativeHost
 import com.nozbe.watermelondb.jsi.WatermelonDBJSIPackage;
-import com.bugsnag.android.Bugsnag
 import expo.modules.ApplicationLifecycleDispatcher
 import chat.rocket.reactnative.networking.SSLPinningTurboModule;
 import chat.rocket.reactnative.networking.SSLPinningTurboPackage;
@@ -77,8 +76,6 @@ open class MainApplication : Application(), ReactApplication {
 
   override fun onCreate() {
     super.onCreate()
-    Bugsnag.start(this)
-    
     migrateLegacyExperimentalDatabases()
 
     // Initialize MMKV encryption - reads existing key or generates new one
