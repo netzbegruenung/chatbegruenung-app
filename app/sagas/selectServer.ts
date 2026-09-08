@@ -28,6 +28,7 @@ import { setSupportedVersions } from '../actions/supportedVersions';
 import UserPreferences from '../lib/methods/userPreferences';
 import { encryptionStop } from '../actions/encryption';
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
+import appConfig from '../../app.json';
 import { type IServerInfo, RootEnum, type TServerModel } from '../definitions';
 import { CERTIFICATE_KEY, CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
 import { checkSupportedVersions } from '../lib/methods/checkSupportedVersions';
@@ -213,9 +214,9 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		// Return server version even when offline
 		const serverVersion = serverInfo?.version || version;
 
-		// we'll set serverVersion as metadata for bugsnag
+		// we'll set serverVersion as metadata
 		logServerVersion(serverVersion);
-		yield put(selectServerSuccess({ server, version: serverVersion, name: serverInfo?.name || 'Rocket.Chat' }));
+		yield put(selectServerSuccess({ server, version: serverVersion, name: serverInfo?.name || appConfig.name }));
 	} catch (e) {
 		yield put(selectServerFailure());
 		log(e);
